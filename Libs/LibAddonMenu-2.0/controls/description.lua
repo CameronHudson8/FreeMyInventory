@@ -5,11 +5,11 @@
 	width = "full",	--or "half" (optional)
 	reference = "MyAddonDescription"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 7
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("description", widgetVersion) then return end
+if not LAM:RegisterWidget("description", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local tinsert = table.insert
@@ -54,10 +54,9 @@ function LAMCreateControl.description(parent, descriptionData, controlName)
 
 	control.UpdateValue = UpdateValue
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 
 	return control
-
 end

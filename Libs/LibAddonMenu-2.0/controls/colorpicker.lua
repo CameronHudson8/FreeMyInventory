@@ -10,16 +10,15 @@
 	default = {r = defaults.r, g = defaults.g, b = defaults.b, a = defaults.a},	--(optional) table of default color values (or default = defaultColor, where defaultColor is a table with keys of r, g, b[, a])
 	reference = "MyAddonColorpicker"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 8
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("colorpicker", widgetVersion) then return end
+if not LAM:RegisterWidget("colorpicker", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
 local tinsert = table.insert
-
 
 local function UpdateDisabled(control)
 	local disable
@@ -39,7 +38,7 @@ local function UpdateDisabled(control)
 end
 
 local function UpdateValue(control, forceDefault, valueR, valueG, valueB, valueA)
-	if forceDefault then	--if we are forcing defaults
+	if forceDefault then --if we are forcing defaults
 		local color = control.data.default
 		valueR, valueG, valueB, valueA = color.r, color.g, color.b, color.a
 		control.data.setFunc(valueR, valueG, valueB, valueA)
@@ -78,14 +77,19 @@ function LAMCreateControl.colorpicker(parent, colorpickerData, controlName)
 		control:UpdateValue(false, r, g, b, a)
 	end
 
-	control:SetHandler("OnMouseUp", function(self, btn, upInside)
-		if self.isDisabled then return end
+	control:SetHandler(
+		"OnMouseUp",
+		function(self, btn, upInside)
+			if self.isDisabled then
+				return
+			end
 
-		if upInside then
-			local r, g, b, a = colorpickerData.getFunc()
-			COLOR_PICKER:Show(ColorPickerCallback, r, g, b, a, colorpickerData.name)
+			if upInside then
+				local r, g, b, a = colorpickerData.getFunc()
+				COLOR_PICKER:Show(ColorPickerCallback, r, g, b, a, colorpickerData.name)
+			end
 		end
-	end)
+	)
 
 	if colorpickerData.warning then
 		control.warning = wm:CreateControlFromVirtual(nil, control, "ZO_Options_WarningIcon")
@@ -102,7 +106,7 @@ function LAMCreateControl.colorpicker(parent, colorpickerData, controlName)
 	control.UpdateValue = UpdateValue
 	control:UpdateValue()
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

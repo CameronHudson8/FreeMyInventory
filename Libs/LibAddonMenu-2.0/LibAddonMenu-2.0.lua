@@ -2,11 +2,12 @@
 --	Distributed under The Artistic License 2.0 (see LICENSE)	--
 ------------------------------------------------------------------
 
-
 --Register LAM with LibStub
 local MAJOR, MINOR = "LibAddonMenu-2.0", 19
 local lam, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
-if not lam then return end	--the same or newer version of this lib is already loaded into memory
+if not lam then
+	return
+end --the same or newer version of this lib is already loaded into memory
 
 local messages = {}
 local MESSAGE_PREFIX = "[LAM2] "
@@ -26,7 +27,9 @@ local function FlushMessages()
 end
 
 if LAMSettingsPanelCreated and not LAMCompatibilityWarning then
-	PrintLater("An old version of LibAddonMenu with compatibility issues was detected. For more information on how to proceed search for LibAddonMenu on esoui.com")
+	PrintLater(
+		"An old version of LibAddonMenu with compatibility issues was detected. For more information on how to proceed search for LibAddonMenu on esoui.com"
+	)
 	LAMCompatibilityWarning = true
 end
 
@@ -57,12 +60,14 @@ end
 
 local function CreateBaseControl(parent, controlData, controlName)
 	local control = wm:CreateControl(controlName or controlData.reference, parent.scroll or parent, CT_CONTROL)
-	control.panel = parent.panel or parent	-- if this is in a submenu, panel is the submenu's parent
+	control.panel = parent.panel or parent -- if this is in a submenu, panel is the submenu's parent
 	control.data = controlData
 
 	control.isHalfWidth = controlData.width == "half"
 	local width = 510 -- set default width in case a custom parent object is passed
-	if control.panel.GetWidth ~= nil then width = control.panel:GetWidth() - 60 end
+	if control.panel.GetWidth ~= nil then
+		width = control.panel:GetWidth() - 60
+	end
 	control:SetWidth(width)
 	return control
 end
@@ -111,7 +116,6 @@ local ADDON_DATA_TYPE = 1
 local RESELECTING_DURING_REBUILD = true
 local USER_REQUESTED_OPEN = true
 
-
 --INTERNAL FUNCTION
 --scrolls ZO_ScrollList `list` to move the row corresponding to `data`
 --	into view (does nothing if there is no such row in the list)
@@ -120,7 +124,9 @@ local USER_REQUESTED_OPEN = true
 --	a little further than the ZO function
 local function ScrollDataIntoView(list, data)
 	local targetIndex = data.sortIndex
-	if not targetIndex then return end
+	if not targetIndex then
+		return
+	end
 
 	local scrollMin, scrollMax = list.scrollbar:GetMinMax()
 	local scrollTop = list.scrollbar:GetValue()
@@ -140,7 +146,6 @@ local function ScrollDataIntoView(list, data)
 		end
 	end
 end
-
 
 --INTERNAL FUNCTION
 --constructs a string pattern from the text in `searchEdit` control
@@ -167,7 +172,6 @@ local function GetSearchFilterFunc(searchEdit)
 		return data.filterText:lower():find(pattern) ~= nil
 	end
 end
-
 
 --INTERNAL FUNCTION
 --populates `addonList` with entries from `addonsForList`
@@ -208,7 +212,6 @@ local function PopulateAddonList(addonList, filter)
 	end
 end
 
-
 --METHOD: REGISTER WIDGET--
 --each widget has its version checked before loading,
 --so we only have the most recent one in memory
@@ -227,14 +230,12 @@ function lam:RegisterWidget(widgetType, widgetVersion)
 	end
 end
 
-
 --METHOD: OPEN TO ADDON PANEL--
 --opens to a specific addon's option panel
 --Usage:
 --	panel = userdata; the panel returned by the :RegisterOptionsPanel method
 local locSettings = GetString(SI_GAME_MENU_SETTINGS)
 function lam:OpenToPanel(panel)
-
 	-- find and select the panel's row in addon list
 
 	local addonList = lam.addonList
@@ -289,17 +290,17 @@ local function TwinOptionsContainer(parent, leftWidget, rightWidget)
 	TwinOptionsContainer_Index = TwinOptionsContainer_Index + 1
 	local cParent = parent.scroll or parent
 	local panel = parent.panel or cParent
-	local container = wm:CreateControl("$(parent)TwinContainer" .. tostring(TwinOptionsContainer_Index),
-										cParent, CT_CONTROL)
+	local container =
+		wm:CreateControl("$(parent)TwinContainer" .. tostring(TwinOptionsContainer_Index), cParent, CT_CONTROL)
 	container:SetResizeToFitDescendents(true)
-	container:SetAnchor(select(2, leftWidget:GetAnchor(0) ))
+	container:SetAnchor(select(2, leftWidget:GetAnchor(0)))
 
 	leftWidget:ClearAnchors()
 	leftWidget:SetAnchor(TOPLEFT, container, TOPLEFT)
 	rightWidget:SetAnchor(TOPLEFT, leftWidget, TOPRIGHT, 5, 0)
 
-	leftWidget:SetWidth( leftWidget:GetWidth() - 2.5 ) -- fixes bad alignment with 'full' controls
-	rightWidget:SetWidth( rightWidget:GetWidth() - 2.5 )
+	leftWidget:SetWidth(leftWidget:GetWidth() - 2.5) -- fixes bad alignment with 'full' controls
+	rightWidget:SetWidth(rightWidget:GetWidth() - 2.5)
 
 	leftWidget:SetParent(container)
 	rightWidget:SetParent(container)
@@ -319,7 +320,12 @@ local function CreateOptionsControls(panel)
 	if optionsTable then
 		local function CreateAndAnchorWidget(parent, widgetData, offsetX, offsetY, anchorTarget, wasHalf)
 			local widget
-			local status, err = pcall(function() widget = LAMCreateControl[widgetData.type](parent, widgetData) end)
+			local status, err =
+				pcall(
+				function()
+					widget = LAMCreateControl[widgetData.type](parent, widgetData)
+				end
+			)
 			if not status then
 				return err or true, offsetY, anchorTarget, wasHalf
 			else
@@ -362,7 +368,7 @@ local function CreateOptionsControls(panel)
 		end
 
 		CreateWidgetsInPanel = function(parent, widgetDataTable, startIndex, endIndex)
-			for i=startIndex,endIndex do
+			for i = startIndex, endIndex do
 				local widgetData = widgetDataTable[i]
 				if not widgetData then
 					PrintLater("Skipped creation of missing entry in the settings menu of " .. addonID .. ".")
@@ -375,7 +381,8 @@ local function CreateOptionsControls(panel)
 						offsetX = 5
 					end
 
-					err, anchorOffset, lastAddedControl, wasHalf = CreateAndAnchorWidget(parent, widgetData, offsetX, anchorOffset, lastAddedControl, wasHalf)
+					err, anchorOffset, lastAddedControl, wasHalf =
+						CreateAndAnchorWidget(parent, widgetData, offsetX, anchorOffset, lastAddedControl, wasHalf)
 					if err then
 						PrintLater(("Could not create %s '%s' of %s."):format(widgetData.type, widgetData.name or "unnamed", addonID))
 					end
@@ -393,7 +400,7 @@ local function CreateOptionsControls(panel)
 			if #fifo > 0 then
 				local nextCall = table.remove(fifo, 1)
 				nextCall()
-				if(nextCall == PrepareForNextPanel) then
+				if (nextCall == PrepareForNextPanel) then
 					DoCreateSettings()
 				else
 					zo_callLater(DoCreateSettings, THROTTLE_TIMEOUT)
@@ -411,10 +418,9 @@ local function CreateOptionsControls(panel)
 	end
 end
 
-
 --INTERNAL FUNCTION
 --handles switching between panels
-local function ToggleAddonPanels(panel)	--called in OnShow of newly shown panel
+local function ToggleAddonPanels(panel) --called in OnShow of newly shown panel
 	local currentlySelected = lam.currentAddonPanel
 	if currentlySelected and currentlySelected ~= panel then
 		currentlySelected:SetHidden(true)
@@ -424,7 +430,7 @@ local function ToggleAddonPanels(panel)	--called in OnShow of newly shown panel
 	-- refresh visible rows to reflect panel IsHidden status
 	ZO_ScrollList_RefreshVisible(lam.addonList)
 
-	if not optionsCreated[panel:GetName()] then	--if this is the first time opening this panel, create these options
+	if not optionsCreated[panel:GetName()] then --if this is the first time opening this panel, create these options
 		CreateOptionsControls(panel)
 	end
 
@@ -439,14 +445,13 @@ local CheckSafetyAndInitialize
 --	addonID = "string"; unique ID which will be the global name of your panel
 --	panelData = table; data object for your panel - see controls\panel.lua
 function lam:RegisterAddonPanel(addonID, panelData)
-
 	d(type(FMI))
 	d(type(FMI.data))
 	d(type(FMI.data.window))
-	
+
 	CheckSafetyAndInitialize(addonID)
 	local container = lam:GetAddonPanelContainer()
-	local panel = lamcc.panel(container, panelData, addonID)	--addonID==global name of panel
+	local panel = lamcc.panel(container, panelData, addonID) --addonID==global name of panel
 	panel:SetHidden(true)
 	panel:SetAnchorFill(container)
 	panel:SetHandler("OnShow", ToggleAddonPanels)
@@ -463,7 +468,7 @@ function lam:RegisterAddonPanel(addonID, panelData)
 	local addonData = {
 		panel = panel,
 		name = stripMarkup(panelData.name),
-		filterText = stripMarkup(tconcat(filterParts, "\t")):lower(),
+		filterText = stripMarkup(tconcat(filterParts, "\t")):lower()
 	}
 
 	tinsert(addonsForList, addonData)
@@ -477,10 +482,9 @@ function lam:RegisterAddonPanel(addonID, panelData)
 	d(type(FMI))
 	d(type(FMI.data))
 	d(type(FMI.data.window))
-	
-	return panel	--return for authors creating options manually
-end
 
+	return panel --return for authors creating options manually
+end
 
 --METHOD: REGISTER OPTION CONTROLS
 --registers the options you want shown for your addon
@@ -491,10 +495,9 @@ end
 --Usage:
 --	addonID = "string"; the same string passed to :RegisterAddonPanel
 --	optionsTable = table; the table containing all of the options controls and their data
-function lam:RegisterOptionControls(addonID, optionsTable)	--optionsTable = {sliderData, buttonData, etc}
+function lam:RegisterOptionControls(addonID, optionsTable) --optionsTable = {sliderData, buttonData, etc}
 	addonToOptionsMap[addonID] = optionsTable
 end
-
 
 --INTERNAL FUNCTION
 --creates LAM's Addon Settings entry in ZO_GameMenu
@@ -507,12 +510,12 @@ local function CreateAddonSettingsMenuEntry()
 		fr = "Extensions",
 		de = "Erweiterungen",
 		ru = "Îacòpoéêè äoïoìîeîèé",
-		es = "Configura Addons",
+		es = "Configura Addons"
 	}
 
 	local panelData = {
 		id = KEYBOARD_OPTIONS.currentPanelId,
-		name = controlPanelNames[GetCVar("Language.2")] or controlPanelNames["en"],
+		name = controlPanelNames[GetCVar("Language.2")] or controlPanelNames["en"]
 	}
 
 	KEYBOARD_OPTIONS.currentPanelId = panelData.id + 1
@@ -532,7 +535,12 @@ local function CreateAddonSettingsMenuEntry()
 		if not addonListSorted and #addonsForList > 0 then
 			local searchEdit = LAMAddonSettingsWindow:GetNamedChild("SearchFilterEdit")
 			--we're about to show our list for the first time - let's sort it
-			table.sort(addonsForList, function(a, b) return a.name < b.name end)
+			table.sort(
+				addonsForList,
+				function(a, b)
+					return a.name < b.name
+				end
+			)
 			PopulateAddonList(lam.addonList, GetSearchFilterFunc(searchEdit))
 			addonListSorted = true
 		end
@@ -547,7 +555,6 @@ local function CreateAddonSettingsMenuEntry()
 
 	ZO_GameMenu_AddSettingPanel(panelData)
 end
-
 
 --INTERNAL FUNCTION
 --creates the left-hand menu in LAM's window
@@ -613,12 +620,11 @@ local function CreateAddonList(name, parent)
 	return addonList
 end
 
-
 --INTERNAL FUNCTION
 local function CreateSearchFilterBox(name, parent)
 	local boxControl = wm:CreateControl(name, parent, CT_CONTROL)
 
-	local srchButton =  wm:CreateControl("$(parent)Button", boxControl, CT_BUTTON)
+	local srchButton = wm:CreateControl("$(parent)Button", boxControl, CT_BUTTON)
 	srchButton:SetDimensions(32, 32)
 	srchButton:SetAnchor(LEFT, nil, LEFT, 2, 0)
 	srchButton:SetNormalTexture("EsoUI/Art/LFG/LFG_tabIcon_groupTools_up.dds")
@@ -673,49 +679,60 @@ local function CreateSearchFilterBox(name, parent)
 
 	local focusLostTime = 0
 
-	srchButton:SetHandler("OnClicked", function(self)
-		srchEdit:Clear()
-		if GetFrameTimeMilliseconds() - focusLostTime < 100 then
-			-- re-focus the edit box if it lost focus due to this
-			-- button click (note that this handler may run a few
-			-- frames later)
-			srchEdit:TakeFocus()
+	srchButton:SetHandler(
+		"OnClicked",
+		function(self)
+			srchEdit:Clear()
+			if GetFrameTimeMilliseconds() - focusLostTime < 100 then
+				-- re-focus the edit box if it lost focus due to this
+				-- button click (note that this handler may run a few
+				-- frames later)
+				srchEdit:TakeFocus()
+			end
 		end
-	end)
+	)
 
 	srchEdit:SetHandler("OnMouseEnter", srchMouseEnter)
 	srchEdit:SetHandler("OnMouseExit", srchMouseExit)
 	srchEdit:SetHandler("OnFocusGained", srchBgUpdateAlpha)
 
-	srchEdit:SetHandler("OnFocusLost", function()
-		focusLostTime = GetFrameTimeMilliseconds()
-		srchBgUpdateAlpha()
-	end)
-
-	srchEdit:SetHandler("OnEscape", function(self)
-		self:Clear()
-		self:LoseFocus()
-	end)
-
-	srchEdit:SetHandler("OnTextChanged", function(self)
-		local filterFunc = GetSearchFilterFunc(self)
-		if filterFunc then
-			srchActive = true
-			srchBg:SetEdgeColor(ZO_SECOND_CONTRAST_TEXT:UnpackRGBA())
-			srchButton:SetState(BSTATE_PRESSED)
-		else
-			srchActive = false
-			srchBg:SetEdgeColor(ZO_DISABLED_TEXT:UnpackRGBA())
-			srchButton:SetState(BSTATE_NORMAL)
+	srchEdit:SetHandler(
+		"OnFocusLost",
+		function()
+			focusLostTime = GetFrameTimeMilliseconds()
+			srchBgUpdateAlpha()
 		end
-		srchBgUpdateAlpha()
-		PopulateAddonList(lam.addonList, filterFunc)
-		PlaySound(SOUNDS.SPINNER_DOWN)
-	end)
+	)
+
+	srchEdit:SetHandler(
+		"OnEscape",
+		function(self)
+			self:Clear()
+			self:LoseFocus()
+		end
+	)
+
+	srchEdit:SetHandler(
+		"OnTextChanged",
+		function(self)
+			local filterFunc = GetSearchFilterFunc(self)
+			if filterFunc then
+				srchActive = true
+				srchBg:SetEdgeColor(ZO_SECOND_CONTRAST_TEXT:UnpackRGBA())
+				srchButton:SetState(BSTATE_PRESSED)
+			else
+				srchActive = false
+				srchBg:SetEdgeColor(ZO_DISABLED_TEXT:UnpackRGBA())
+				srchButton:SetState(BSTATE_NORMAL)
+			end
+			srchBgUpdateAlpha()
+			PopulateAddonList(lam.addonList, filterFunc)
+			PlaySound(SOUNDS.SPINNER_DOWN)
+		end
+	)
 
 	return boxControl
 end
-
 
 --INTERNAL FUNCTION
 --creates LAM's Addon Settings top-level window
@@ -791,7 +808,6 @@ local function CreateAddonSettingsWindow()
 	return tlw
 end
 
-
 --INITIALIZING
 local safeToInitialize = false
 local hasInitialized = false
@@ -812,7 +828,11 @@ em:RegisterForEvent(eventHandle, EVENT_PLAYER_ACTIVATED, OnActivated)
 
 function CheckSafetyAndInitialize(addonID)
 	if not safeToInitialize then
-		local msg = string.format("The panel with id '%s' was registered before addon loading has completed. This might break the AddOn Settings menu.", addonID)
+		local msg =
+			string.format(
+			"The panel with id '%s' was registered before addon loading has completed. This might break the AddOn Settings menu.",
+			addonID
+		)
 		PrintLater(msg)
 	end
 	if not hasInitialized then
@@ -820,14 +840,12 @@ function CheckSafetyAndInitialize(addonID)
 	end
 end
 
-
 --TODO documentation
 function lam:GetAddonPanelContainer()
 	local fragment = lam:GetAddonSettingsFragment()
 	local window = fragment:GetControl()
 	return window:GetNamedChild("PanelContainer")
 end
-
 
 --TODO documentation
 function lam:GetAddonSettingsFragment()
@@ -839,6 +857,5 @@ function lam:GetAddonSettingsFragment()
 	end
 	return LAMAddonSettingsFragment
 end
-
 
 -- vi: noexpandtab

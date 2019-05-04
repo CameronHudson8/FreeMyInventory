@@ -9,11 +9,11 @@
 	warning = "Will need to reload the UI.",	--(optional)
 	reference = "MyAddonButton"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 8
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("button", widgetVersion) then return end
+if not LAM:RegisterWidget("button", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
@@ -29,7 +29,6 @@ local function UpdateDisabled(control)
 
 	control.button:SetEnabled(not disable)
 end
-
 
 --controlName is optional
 local MIN_HEIGHT = 28 -- default_button height
@@ -62,12 +61,15 @@ function LAMCreateControl.button(parent, buttonData, controlName)
 	button.data = {tooltipText = LAM.util.GetTooltipText(buttonData.tooltip)}
 	button:SetHandler("OnMouseEnter", ZO_Options_OnMouseEnter)
 	button:SetHandler("OnMouseExit", ZO_Options_OnMouseExit)
-	button:SetHandler("OnClicked", function(self, ...)
-		buttonData.func(self, ...)
-		if control.panel.data.registerForRefresh then
-			cm:FireCallbacks("LAM-RefreshPanel", control)
+	button:SetHandler(
+		"OnClicked",
+		function(self, ...)
+			buttonData.func(self, ...)
+			if control.panel.data.registerForRefresh then
+				cm:FireCallbacks("LAM-RefreshPanel", control)
+			end
 		end
-	end)
+	)
 
 	if buttonData.warning then
 		control.warning = wm:CreateControlFromVirtual(nil, control, "ZO_Options_WarningIcon")
@@ -80,7 +82,7 @@ function LAMCreateControl.button(parent, buttonData, controlName)
 		control:UpdateDisabled()
 
 		--this is here because buttons don't have an UpdateValue method
-		if control.panel.data.registerForRefresh then	--if our parent window wants to refresh controls, then add this to the list
+		if control.panel.data.registerForRefresh then --if our parent window wants to refresh controls, then add this to the list
 			tinsert(control.panel.controlsToRefresh, control)
 		end
 	end

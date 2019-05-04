@@ -5,15 +5,15 @@
 	controls = {sliderData, buttonData}	--(optional) used by LAM
 	reference = "MyAddonSubmenu"	--(optional) unique global reference to control
 }	]]
-
 local widgetVersion = 9
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("submenu", widgetVersion) then return end
+if not LAM:RegisterWidget("submenu", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local am = ANIMATION_MANAGER
 local tinsert = table.insert
-
 
 local function UpdateValue(control)
 	control.label:SetText(control.data.name)
@@ -69,18 +69,20 @@ function LAMCreateControl.submenu(parent, submenuData, controlName)
 	control.arrow = wm:CreateControl(nil, bg, CT_TEXTURE)
 	local arrow = control.arrow
 	arrow:SetDimensions(28, 28)
-	arrow:SetTexture("EsoUI\\Art\\Miscellaneous\\list_sortdown.dds")	--list_sortup for the other way
+	arrow:SetTexture("EsoUI\\Art\\Miscellaneous\\list_sortdown.dds") --list_sortup for the other way
 	arrow:SetAnchor(TOPRIGHT, bg, TOPRIGHT, -5, 5)
 
 	--figure out the cool animation later...
 	control.animation = am:CreateTimeline()
 	local animation = control.animation
-	animation:SetPlaybackType(ANIMATION_SIZE, 0)	--2nd arg = loop count
+	animation:SetPlaybackType(ANIMATION_SIZE, 0) --2nd arg = loop count
 
 	control:SetResizeToFitDescendents(true)
 	control.open = false
 	label:SetHandler("OnMouseUp", AnimateSubmenu)
-	animation:SetHandler("OnStop", function(self, completedPlaying)
+	animation:SetHandler(
+		"OnStop",
+		function(self, completedPlaying)
 			scroll:SetResizeToFitDescendents(control.open)
 			if control.open then
 				control.arrow:SetTexture("EsoUI\\Art\\Miscellaneous\\list_sortup.dds")
@@ -90,7 +92,8 @@ function LAMCreateControl.submenu(parent, submenuData, controlName)
 				scroll:SetResizeToFitPadding(5, 0)
 				scroll:SetHeight(0)
 			end
-		end)
+		end
+	)
 
 	--small strip at the bottom of the submenu that you can click to close it
 	control.btmToggle = wm:CreateControl(nil, control, CT_TEXTURE)
@@ -104,7 +107,7 @@ function LAMCreateControl.submenu(parent, submenuData, controlName)
 
 	control.UpdateValue = UpdateValue
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

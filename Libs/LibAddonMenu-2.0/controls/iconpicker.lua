@@ -17,10 +17,11 @@
 	default = defaults.var,	--(optional)
 	reference = "MyAddonIconPicker"	--(optional) unique global reference to control
 }	]]
-
 local widgetVersion = 3
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("iconpicker", widgetVersion) then return end
+if not LAM:RegisterWidget("iconpicker", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
@@ -32,11 +33,15 @@ LAM.util.GetIconPickerMenu = function()
 	if not iconPicker then
 		iconPicker = IconPickerMenu:New("LAMIconPicker")
 		local sceneFragment = LAM:GetAddonSettingsFragment()
-		ZO_PreHook(sceneFragment, "OnHidden", function()
-			if not iconPicker.control:IsHidden() then
-				iconPicker:Clear()
+		ZO_PreHook(
+			sceneFragment,
+			"OnHidden",
+			function()
+				if not iconPicker.control:IsHidden() then
+					iconPicker:Clear()
+				end
 			end
-		end)
+		)
 	end
 	return iconPicker
 end
@@ -85,30 +90,39 @@ function IconPickerMenu:Initialize(name)
 		local icon = wm:CreateControl(name .. "Entry" .. pool:GetNextControlId(), scroll, CT_TEXTURE)
 		icon:SetMouseEnabled(true)
 		icon:SetDrawLevel(3)
-		icon:SetHandler("OnMouseEnter", function()
-			mouseOver:SetAnchor(TOPLEFT, icon, TOPLEFT, 0, 0)
-			mouseOver:SetAnchor(BOTTOMRIGHT, icon, BOTTOMRIGHT, 0, 0)
-			mouseOver:SetHidden(false)
-			if self.customOnMouseEnter then
-				self.customOnMouseEnter(icon)
-			else
-				self:OnMouseEnter(icon)
+		icon:SetHandler(
+			"OnMouseEnter",
+			function()
+				mouseOver:SetAnchor(TOPLEFT, icon, TOPLEFT, 0, 0)
+				mouseOver:SetAnchor(BOTTOMRIGHT, icon, BOTTOMRIGHT, 0, 0)
+				mouseOver:SetHidden(false)
+				if self.customOnMouseEnter then
+					self.customOnMouseEnter(icon)
+				else
+					self:OnMouseEnter(icon)
+				end
 			end
-		end)
-		icon:SetHandler("OnMouseExit", function()
-			mouseOver:ClearAnchors()
-			mouseOver:SetHidden(true)
-			if self.customOnMouseExit then
-				self.customOnMouseExit(icon)
-			else
-				self:OnMouseExit(icon)
+		)
+		icon:SetHandler(
+			"OnMouseExit",
+			function()
+				mouseOver:ClearAnchors()
+				mouseOver:SetHidden(true)
+				if self.customOnMouseExit then
+					self.customOnMouseExit(icon)
+				else
+					self:OnMouseExit(icon)
+				end
 			end
-		end)
-		icon:SetHandler("OnMouseUp", function(control, ...)
-			PlaySound("Click")
-			icon.OnSelect(icon, icon.texture)
-			self:Clear()
-		end)
+		)
+		icon:SetHandler(
+			"OnMouseUp",
+			function(control, ...)
+				PlaySound("Click")
+				icon.OnSelect(icon, icon.texture)
+				self:Clear()
+			end
+		)
 		return icon
 	end
 
@@ -121,17 +135,21 @@ function IconPickerMenu:Initialize(name)
 	self.icons = {}
 	self.color = ZO_DEFAULT_ENABLED_COLOR
 
-	EVENT_MANAGER:RegisterForEvent(name .. "_OnGlobalMouseUp", EVENT_GLOBAL_MOUSE_UP, function()
-		if self.refCount ~= nil then
-			local moc = wm:GetMouseOverControl()
-			if(moc:GetOwningWindow() ~= control) then
-				self.refCount = self.refCount - 1
-				if self.refCount <= 0 then
-					self:Clear()
+	EVENT_MANAGER:RegisterForEvent(
+		name .. "_OnGlobalMouseUp",
+		EVENT_GLOBAL_MOUSE_UP,
+		function()
+			if self.refCount ~= nil then
+				local moc = wm:GetMouseOverControl()
+				if (moc:GetOwningWindow() ~= control) then
+					self.refCount = self.refCount - 1
+					if self.refCount <= 0 then
+						self:Clear()
+					end
 				end
 			end
 		end
-	end)
+	)
 end
 
 function IconPickerMenu:OnMouseEnter(icon)
@@ -151,7 +169,9 @@ end
 local DEFAULT_SIZE = 28
 function IconPickerMenu:SetIconSize(value)
 	local iconSize = DEFAULT_SIZE
-	if value ~= nil then iconSize = math.max(iconSize, value) end
+	if value ~= nil then
+		iconSize = math.max(iconSize, value)
+	end
 	self.iconSize = iconSize
 end
 
@@ -223,8 +243,13 @@ function IconPickerMenu:AddIcon(texturePath, callback, tooltip)
 end
 
 function IconPickerMenu:Show(parent)
-	if #self.icons == 0 then return false end
-	if not self.control:IsHidden() then self:Clear() return false end
+	if #self.icons == 0 then
+		return false
+	end
+	if not self.control:IsHidden() then
+		self:Clear()
+		return false
+	end
 	self:UpdateDimensions()
 	self:UpdateAnchors()
 
@@ -262,13 +287,17 @@ local function UpdateChoices(control, choices, choicesTooltips)
 	for i = 1, #choices do
 		local texture = choices[i]
 		if not addedChoices[texture] then -- remove duplicates
-			iconPicker:AddIcon(choices[i], function(self, texture)
-				control.icon:SetTexture(texture)
-				data.setFunc(texture)
-				if control.panel.data.registerForRefresh then
-					cm:FireCallbacks("LAM-RefreshPanel", control)
-				end
-			end, choicesTooltips[i])
+			iconPicker:AddIcon(
+				choices[i],
+				function(self, texture)
+					control.icon:SetTexture(texture)
+					data.setFunc(texture)
+					if control.panel.data.registerForRefresh then
+						cm:FireCallbacks("LAM-RefreshPanel", control)
+					end
+				end,
+				choicesTooltips[i]
+			)
 			addedChoices[texture] = true
 		end
 	end
@@ -317,7 +346,7 @@ local function UpdateDisabled(control)
 end
 
 local function UpdateValue(control, forceDefault, value)
-	if forceDefault then	--if we are forcing defaults
+	if forceDefault then --if we are forcing defaults
 		value = control.data.default
 		control.data.setFunc(value)
 		control.icon:SetTexture(value)
@@ -387,8 +416,18 @@ function LAMCreateControl.iconpicker(parent, iconpickerData, controlName)
 	dropdown:SetAnchor(LEFT, control.container, LEFT, 0, 0)
 	dropdown:SetMouseEnabled(true)
 	dropdown:SetHandler("OnMouseUp", ShowIconPicker)
-	dropdown:SetHandler("OnMouseEnter", function() ZO_Options_OnMouseEnter(control) end)
-	dropdown:SetHandler("OnMouseExit", function() ZO_Options_OnMouseExit(control) end)
+	dropdown:SetHandler(
+		"OnMouseEnter",
+		function()
+			ZO_Options_OnMouseEnter(control)
+		end
+	)
+	dropdown:SetHandler(
+		"OnMouseExit",
+		function()
+			ZO_Options_OnMouseExit(control)
+		end
+	)
 
 	control.icon = wm:CreateControl(nil, dropdown, CT_TEXTURE)
 	local icon = control.icon
@@ -433,7 +472,7 @@ function LAMCreateControl.iconpicker(parent, iconpickerData, controlName)
 	control.SetIconSize = SetIconSize
 	control:SetIconSize(iconSize)
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

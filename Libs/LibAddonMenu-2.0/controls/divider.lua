@@ -5,11 +5,11 @@
     alpha = 0.25, (optional)
     reference = "MyAddonDivider" -- unique global reference to control (optional)
 } ]]
-
-
 local widgetVersion = 1
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("divider", widgetVersion) then return end
+if not LAM:RegisterWidget("divider", widgetVersion) then
+    return
+end
 
 local wm = WINDOW_MANAGER
 
@@ -25,7 +25,6 @@ function LAMCreateControl.divider(parent, dividerData, controlName)
     end
     control:SetDimensions(isHalfWidth and width / 2 or width, height)
 
-    
     local alpha = dividerData.alpha
     if not alpha or type(alpha) ~= "numeric" or alpha > 1 or alpha < 0 then
         alpha = DEFAULT_ALPHA

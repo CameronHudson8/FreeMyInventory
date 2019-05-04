@@ -2,9 +2,9 @@ FMI.config = {}
 
 function FMI.config.create()
     local lam2 = LibStub:GetLibrary("LibAddonMenu-2.0")
-    
+
     local panelIdentifier = "FMIpanel"
-    
+
     local settingsPanel = {
         type = "panel",
         name = FMI.lang.core.addonName,
@@ -12,9 +12,9 @@ function FMI.config.create()
         author = FMI.Author,
         version = FMI.Version,
         registerForRefresh = true,
-        registerForDefaults = true,
+        registerForDefaults = true
     }
-    
+
     local settingsMenu = {
         [1] = {
             type = "header",
@@ -29,7 +29,7 @@ function FMI.config.create()
             setFunc = FMI.config.setDebug,
             width = "full",
             warning = FMI.lang.config.gen_dbg_warn,
-            default = FMI.defaults.showdebug,
+            default = FMI.defaults.showdebug
         },
         [3] = {
             type = "slider",
@@ -40,7 +40,7 @@ function FMI.config.create()
             step = 1,
             getFunc = FMI.config.getMarkdown,
             setFunc = FMI.config.setMarkdown,
-            default = FMI.defaults.undercutPerc,
+            default = FMI.defaults.undercutPerc
         },
         [4] = {
             type = "dropdown",
@@ -69,7 +69,7 @@ function FMI.config.create()
             getFunc = FMI.config.getSess,
             setFunc = FMI.config.setSess,
             width = "full",
-            default = FMI.defaults.tooltips.session,
+            default = FMI.defaults.tooltips.session
         },
         [8] = {
             type = "checkbox",
@@ -78,7 +78,7 @@ function FMI.config.create()
             getFunc = FMI.config.getHist,
             setFunc = FMI.config.setHist,
             width = "full",
-            default = FMI.defaults.tooltips.history,
+            default = FMI.defaults.tooltips.history
         },
         [9] = {
             type = "checkbox",
@@ -87,13 +87,12 @@ function FMI.config.create()
             getFunc = FMI.config.getRecom,
             setFunc = FMI.config.setRecom,
             width = "full",
-            default = FMI.defaults.tooltips.recommend,
-        },
+            default = FMI.defaults.tooltips.recommend
+        }
     }
-    
+
     lam2:RegisterAddonPanel(panelIdentifier, settingsPanel)
     lam2:RegisterOptionControls(panelIdentifier, settingsMenu)
-	
 end
 
 ----Dummy
@@ -103,21 +102,21 @@ function FMI.config.setDummy(value)
 end
 
 ---- GS Update lang
-function  FMI.config.getLang()
+function FMI.config.getLang()
     return FMI.data.language
 end
 
 function FMI.config.setLang(value)
-    FMI.data.language=value
+    FMI.data.language = value
 end
 
 ---- Mark Down
-function  FMI.config.getMarkdown()
+function FMI.config.getMarkdown()
     return FMI.data.undercutPerc
 end
 
 function FMI.config.setMarkdown(value)
-    FMI.data.undercutPerc=value
+    FMI.data.undercutPerc = value
 end
 
 ---- Manage debug
@@ -126,7 +125,7 @@ function FMI.config.getDebug()
 end
 
 function FMI.config.setDebug(value)
-    FMI.data.showdebug=value
+    FMI.data.showdebug = value
 end
 
 ---- Manage Session Tooltip
@@ -135,7 +134,7 @@ function FMI.config.getSess()
 end
 
 function FMI.config.setSess(value)
-    FMI.data.tooltips.session=value
+    FMI.data.tooltips.session = value
 end
 
 ---- Manage History Tooltip
@@ -144,7 +143,7 @@ function FMI.config.getHist()
 end
 
 function FMI.config.setHist(value)
-    FMI.data.tooltips.history=value
+    FMI.data.tooltips.history = value
 end
 
 ---- Manage Recommendation Tooltip
@@ -153,5 +152,5 @@ function FMI.config.getRecom()
 end
 
 function FMI.config.setRecom(value)
-    FMI.data.tooltips.recommend=value
+    FMI.data.tooltips.recommend = value
 end

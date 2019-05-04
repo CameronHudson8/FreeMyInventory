@@ -2,7 +2,7 @@
   <Layer name="SI_KEYBINDINGS_CATEGORY_GENERAL">
     <Category name="Free My Inventory">
       <Action name="FMI_TOGGLE">
-		<Down>FMI.GuildStoreSearchToggle()</Down>
+        <Down>FMI.GuildStoreSearchToggle()</Down>
       </Action>
     </Category>
   </Layer>

@@ -12,16 +12,15 @@
 	default = defaults.text,	--(optional)
 	reference = "MyAddonEditbox"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 9
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("editbox", widgetVersion) then return end
+if not LAM:RegisterWidget("editbox", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
 local tinsert = table.insert
-
 
 local function UpdateDisabled(control)
 	local disable
@@ -43,7 +42,7 @@ local function UpdateDisabled(control)
 end
 
 local function UpdateValue(control, forceDefault, value)
-	if forceDefault then	--if we are forcing defaults
+	if forceDefault then --if we are forcing defaults
 		value = control.data.default
 		control.data.setFunc(value)
 		control.editbox:SetText(value)
@@ -71,37 +70,62 @@ function LAMCreateControl.editbox(parent, editboxData, controlName)
 
 	if editboxData.isMultiline then
 		control.editbox = wm:CreateControlFromVirtual(nil, bg, "ZO_DefaultEditMultiLineForBackdrop")
-		control.editbox:SetHandler("OnMouseWheel", function(self, delta)
-			if self:HasFocus() then	--only set focus to new spots if the editbox is currently in use
-				local cursorPos = self:GetCursorPosition()
-				local text = self:GetText()
-				local textLen = text:len()
-				local newPos
-				if delta > 0 then	--scrolling up
-					local reverseText = text:reverse()
-					local revCursorPos = textLen - cursorPos
-					local revPos = reverseText:find("\n", revCursorPos+1)
-					newPos = revPos and textLen - revPos
-				else	--scrolling down
-					newPos = text:find("\n", cursorPos+1)
-				end
-				if newPos then	--if we found a new line, then scroll, otherwise don't
-					self:SetCursorPosition(newPos)
+		control.editbox:SetHandler(
+			"OnMouseWheel",
+			function(self, delta)
+				if self:HasFocus() then --only set focus to new spots if the editbox is currently in use
+					local cursorPos = self:GetCursorPosition()
+					local text = self:GetText()
+					local textLen = text:len()
+					local newPos
+					if delta > 0 then --scrolling up
+						local reverseText = text:reverse()
+						local revCursorPos = textLen - cursorPos
+						local revPos = reverseText:find("\n", revCursorPos + 1)
+						newPos = revPos and textLen - revPos
+					else --scrolling down
+						newPos = text:find("\n", cursorPos + 1)
+					end
+					if newPos then --if we found a new line, then scroll, otherwise don't
+						self:SetCursorPosition(newPos)
+					end
 				end
 			end
-		end)
+		)
 	else
 		control.editbox = wm:CreateControlFromVirtual(nil, bg, "ZO_DefaultEditForBackdrop")
 	end
 	local editbox = control.editbox
 	editbox:SetText(editboxData.getFunc())
 	editbox:SetMaxInputChars(3000)
-	editbox:SetHandler("OnFocusLost", function(self) control:UpdateValue(false, self:GetText()) end)
-	editbox:SetHandler("OnEscape", function(self) self:LoseFocus() control:UpdateValue(false, self:GetText()) end)
-	editbox:SetHandler("OnMouseEnter", function() ZO_Options_OnMouseEnter(control) end)
-	editbox:SetHandler("OnMouseExit", function() ZO_Options_OnMouseExit(control) end)
+	editbox:SetHandler(
+		"OnFocusLost",
+		function(self)
+			control:UpdateValue(false, self:GetText())
+		end
+	)
+	editbox:SetHandler(
+		"OnEscape",
+		function(self)
+			self:LoseFocus()
+			control:UpdateValue(false, self:GetText())
+		end
+	)
+	editbox:SetHandler(
+		"OnMouseEnter",
+		function()
+			ZO_Options_OnMouseEnter(control)
+		end
+	)
+	editbox:SetHandler(
+		"OnMouseExit",
+		function()
+			ZO_Options_OnMouseExit(control)
+		end
+	)
 
-	local MIN_WIDTH = (parent.GetWidth and (parent:GetWidth() / 10)) or (parent.panel.GetWidth and (parent.panel:GetWidth() / 10)) or 0
+	local MIN_WIDTH =
+		(parent.GetWidth and (parent:GetWidth() / 10)) or (parent.panel.GetWidth and (parent.panel:GetWidth() / 10)) or 0
 
 	control.label:ClearAnchors()
 	container:ClearAnchors()
@@ -152,7 +176,7 @@ function LAMCreateControl.editbox(parent, editboxData, controlName)
 	control.UpdateValue = UpdateValue
 	control:UpdateValue()
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

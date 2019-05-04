@@ -12,16 +12,15 @@
 	default = defaults.var,	--(optional)
 	reference = "MyAddonDropdown"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 10
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("dropdown", widgetVersion) then return end
+if not LAM:RegisterWidget("dropdown", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
 local tinsert = table.insert
-
 
 local function UpdateDisabled(control)
 	local disable
@@ -40,7 +39,7 @@ local function UpdateDisabled(control)
 end
 
 local function UpdateValue(control, forceDefault, value)
-	if forceDefault then	--if we are forcing defaults
+	if forceDefault then --if we are forcing defaults
 		value = control.data.default
 		control.data.setFunc(value)
 		control.dropdown:SetSelectedItem(value)
@@ -61,14 +60,14 @@ local function DropdownCallback(control, choiceText, choice)
 end
 
 local function UpdateChoices(control, choices)
-	control.dropdown:ClearItems()	--remove previous choices	--(need to call :SetSelectedItem()?)
+	control.dropdown:ClearItems() --remove previous choices	--(need to call :SetSelectedItem()?)
 
 	--build new list of choices
 	local choices = choices or control.data.choices
 	for i = 1, #choices do
 		local entry = control.dropdown:CreateItemEntry(choices[i], DropdownCallback)
 		entry.control = control
-		control.dropdown:AddItem(entry, not control.data.sort and ZO_COMBOBOX_SUPRESS_UPDATE)	--if sort type/order isn't specified, then don't sort
+		control.dropdown:AddItem(entry, not control.data.sort and ZO_COMBOBOX_SUPRESS_UPDATE) --if sort type/order isn't specified, then don't sort
 	end
 end
 
@@ -93,19 +92,33 @@ function LAMCreateControl.dropdown(parent, dropdownData, controlName)
 	end
 	local comboboxCount = (countControl.comboboxCount or 0) + 1
 	countControl.comboboxCount = comboboxCount
-	control.combobox = wm:CreateControlFromVirtual(zo_strjoin(nil, name, "Combobox", comboboxCount), control.container, "ZO_ComboBox")
+	control.combobox =
+		wm:CreateControlFromVirtual(zo_strjoin(nil, name, "Combobox", comboboxCount), control.container, "ZO_ComboBox")
 
 	local combobox = control.combobox
 	combobox:SetAnchor(TOPLEFT)
 	combobox:SetDimensions(control.container:GetDimensions())
-	combobox:SetHandler("OnMouseEnter", function() ZO_Options_OnMouseEnter(control) end)
-	combobox:SetHandler("OnMouseExit", function() ZO_Options_OnMouseExit(control) end)
+	combobox:SetHandler(
+		"OnMouseEnter",
+		function()
+			ZO_Options_OnMouseEnter(control)
+		end
+	)
+	combobox:SetHandler(
+		"OnMouseExit",
+		function()
+			ZO_Options_OnMouseExit(control)
+		end
+	)
 	control.dropdown = ZO_ComboBox_ObjectFromContainer(combobox)
 	local dropdown = control.dropdown
 	if dropdownData.sort then
 		local sortInfo = GrabSortingInfo(dropdownData.sort)
 		local sortType, sortOrder = sortInfo[1], sortInfo[2]
-		dropdown:SetSortOrder(sortOrder == "up" and ZO_SORT_ORDER_UP or ZO_SORT_ORDER_DOWN, sortType == "name" and ZO_SORT_BY_NAME or ZO_SORT_BY_NAME_NUMERIC)
+		dropdown:SetSortOrder(
+			sortOrder == "up" and ZO_SORT_ORDER_UP or ZO_SORT_ORDER_DOWN,
+			sortType == "name" and ZO_SORT_BY_NAME or ZO_SORT_BY_NAME_NUMERIC
+		)
 	end
 
 	if dropdownData.warning then
@@ -123,7 +136,7 @@ function LAMCreateControl.dropdown(parent, dropdownData, controlName)
 	control.UpdateValue = UpdateValue
 	control:UpdateValue()
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

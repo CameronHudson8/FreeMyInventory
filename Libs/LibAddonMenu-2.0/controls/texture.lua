@@ -7,12 +7,13 @@
 	width = "full",	--or "half" (optional)
 	reference = "MyAddonTexture"	--(optional) unique global reference to control
 }	]]
-
 --add texture coords support?
 
 local widgetVersion = 7
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("texture", widgetVersion) then return end
+if not LAM:RegisterWidget("texture", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 
@@ -22,7 +23,7 @@ function LAMCreateControl.texture(parent, textureData, controlName)
 	local width = control:GetWidth()
 	control:SetResizeToFitDescendents(true)
 
-	if control.isHalfWidth then	--note these restrictions
+	if control.isHalfWidth then --note these restrictions
 		control:SetDimensionConstraints(width / 2, MIN_HEIGHT, width / 2, MIN_HEIGHT * 4)
 	else
 		control:SetDimensionConstraints(width, MIN_HEIGHT, width, MIN_HEIGHT * 4)

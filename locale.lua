@@ -5,41 +5,41 @@
 FMI.lang.sets.en()
 
 function FMI.lang.Set(lang)
-    local language ="en"
+    local language = "en"
 
-    if lang==nil or lang=="" or lang=="Auto" then
+    if lang == nil or lang == "" or lang == "Auto" then
         language = GetCVar("language.2")
-    elseif lang=="English" then
+    elseif lang == "English" then
         language = "en"
-    elseif lang=="Deutsch" then
+    elseif lang == "Deutsch" then
         language = "de"
-    elseif lang=="Français" then
+    elseif lang == "Français" then
         language = "fr"
-    elseif lang=="Russian" then
+    elseif lang == "Russian" then
         language = "ru"
     end
 
-    if (language== nil or language=="en") then  -- No language or en
+    if (language == nil or language == "en") then -- No language or en
         FMI.lang.refresh()
-        return;
+        return
     end
 
-    if (language=="fr") then  -- fr
+    if (language == "fr") then -- fr
         FMI.lang.sets.fr()
         FMI.lang.refresh()
-        return;
+        return
     end
 
-    if (language=="de") then  -- de
+    if (language == "de") then -- de
         FMI.lang.sets.de()
         FMI.lang.refresh()
-        return;
+        return
     end
-    
-    if (language=="ru") then  -- ru
+
+    if (language == "ru") then -- ru
         FMI.lang.sets.ru()
         FMI.lang.refresh()
-        return;
+        return
     end
 
     FMI.lang.refresh()

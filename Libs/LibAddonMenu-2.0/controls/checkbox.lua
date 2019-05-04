@@ -10,11 +10,11 @@
 	default = defaults.var,	--(optional)
 	reference = "MyAddonCheckbox"	--(optional) unique global reference to control
 }	]]
-
-
 local widgetVersion = 10
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("checkbox", widgetVersion) then return end
+if not LAM:RegisterWidget("checkbox", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
@@ -28,7 +28,6 @@ local disabledHLcolor = ZO_DEFAULT_DISABLED_MOUSEOVER_COLOR
 local checkboxColor = ZO_NORMAL_TEXT
 local checkboxHLcolor = ZO_HIGHLIGHT_TEXT
 
-
 local function UpdateDisabled(control)
 	local disable
 	if type(control.data.disabled) == "function" then
@@ -37,7 +36,11 @@ local function UpdateDisabled(control)
 		disable = control.data.disabled
 	end
 
-	control.label:SetColor((disable and ZO_DEFAULT_DISABLED_COLOR or control.value and ZO_DEFAULT_ENABLED_COLOR or ZO_DEFAULT_DISABLED_COLOR):UnpackRGBA())
+	control.label:SetColor(
+		(disable and ZO_DEFAULT_DISABLED_COLOR or control.value and ZO_DEFAULT_ENABLED_COLOR or ZO_DEFAULT_DISABLED_COLOR):UnpackRGBA(
+
+		)
+	)
 	control.checkbox:SetColor((disable and ZO_DEFAULT_DISABLED_COLOR or ZO_NORMAL_TEXT):UnpackRGBA())
 	--control:SetMouseEnabled(not disable)
 	--control:SetMouseEnabled(true)
@@ -56,10 +59,10 @@ local function ToggleCheckbox(control)
 end
 
 local function UpdateValue(control, forceDefault, value)
-	if forceDefault then	--if we are forcing defaults
+	if forceDefault then --if we are forcing defaults
 		value = control.data.default
 		control.data.setFunc(value)
-	elseif value ~= nil then	--our value could be false
+	elseif value ~= nil then --our value could be false
 		control.data.setFunc(value)
 		--after setting this value, let's refresh the others to see if any should be disabled or have their settings changed
 		if control.panel.data.registerForRefresh then
@@ -76,7 +79,9 @@ end
 local function OnMouseEnter(control)
 	ZO_Options_OnMouseEnter(control)
 
-	if control.isDisabled then return end
+	if control.isDisabled then
+		return
+	end
 
 	local label = control.label
 	if control.value then
@@ -90,7 +95,9 @@ end
 local function OnMouseExit(control)
 	ZO_Options_OnMouseExit(control)
 
-	if control.isDisabled then return end
+	if control.isDisabled then
+		return
+	end
 
 	local label = control.label
 	if control.value then
@@ -106,12 +113,17 @@ function LAMCreateControl.checkbox(parent, checkboxData, controlName)
 	local control = LAM.util.CreateLabelAndContainerControl(parent, checkboxData, controlName)
 	control:SetHandler("OnMouseEnter", OnMouseEnter)
 	control:SetHandler("OnMouseExit", OnMouseExit)
-	control:SetHandler("OnMouseUp", function(control)
-		if control.isDisabled then return end
-		PlaySound(SOUNDS.DEFAULT_CLICK)
-		control.value = not control.value
-		control:UpdateValue(false, control.value)
-	end)
+	control:SetHandler(
+		"OnMouseUp",
+		function(control)
+			if control.isDisabled then
+				return
+			end
+			PlaySound(SOUNDS.DEFAULT_CLICK)
+			control.value = not control.value
+			control:UpdateValue(false, control.value)
+		end
+	)
 
 	control.checkbox = wm:CreateControl(nil, control.container, CT_LABEL)
 	local checkbox = control.checkbox
@@ -136,7 +148,7 @@ function LAMCreateControl.checkbox(parent, checkboxData, controlName)
 	control.UpdateValue = UpdateValue
 	control:UpdateValue()
 
-	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then	--if our parent window wants to refresh controls, then add this to the list
+	if control.panel.data.registerForRefresh or control.panel.data.registerForDefaults then --if our parent window wants to refresh controls, then add this to the list
 		tinsert(control.panel.controlsToRefresh, control)
 	end
 

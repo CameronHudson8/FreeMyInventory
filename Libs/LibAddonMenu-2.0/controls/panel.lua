@@ -10,22 +10,22 @@
 	registerForDefaults = true,	--boolean (optional) (will set all options controls back to default values)
 	resetFunc = function() print("defaults reset") end,	--(optional) custom function to run after settings are reset to defaults
 }	]]
-
-
 local widgetVersion = 9
 local LAM = LibStub("LibAddonMenu-2.0")
-if not LAM:RegisterWidget("panel", widgetVersion) then return end
+if not LAM:RegisterWidget("panel", widgetVersion) then
+	return
+end
 
 local wm = WINDOW_MANAGER
 local cm = CALLBACK_MANAGER
 
 local function RefreshPanel(control)
-	local panel = control.panel or control	--callback can be fired by a single control or by the panel showing
+	local panel = control.panel or control --callback can be fired by a single control or by the panel showing
 	local panelControls = panel.controlsToRefresh
 
 	for i = 1, #panelControls do
 		local updateControl = panelControls[i]
-		if  updateControl ~= control then
+		if updateControl ~= control then
 			if updateControl.UpdateValue then
 				updateControl:UpdateValue()
 			end
@@ -54,21 +54,23 @@ local function ForceDefaults(panel)
 end
 ESO_Dialogs["LAM_DEFAULTS"] = {
 	title = {
-		text = SI_INTERFACE_OPTIONS_RESET_TO_DEFAULT_TOOLTIP,
+		text = SI_INTERFACE_OPTIONS_RESET_TO_DEFAULT_TOOLTIP
 	},
 	mainText = {
 		text = SI_OPTIONS_RESET_PROMPT,
-		align = TEXT_ALIGN_CENTER,
+		align = TEXT_ALIGN_CENTER
 	},
 	buttons = {
 		[1] = {
 			text = SI_OPTIONS_RESET,
-			callback = function(dialog) ForceDefaults(dialog.data[1]) end,
+			callback = function(dialog)
+				ForceDefaults(dialog.data[1])
+			end
 		},
 		[2] = {
-			text = SI_DIALOG_CANCEL,
-		},
-	},
+			text = SI_DIALOG_CANCEL
+		}
+	}
 }
 
 local callbackRegistered = false
@@ -87,15 +89,18 @@ function LAMCreateControl.panel(parent, panelData, controlName)
 		info:SetFont("$(CHAT_FONT)|14|soft-shadow-thin")
 		info:SetAnchor(TOPLEFT, label, BOTTOMLEFT, 0, -2)
 		if panelData.author and panelData.version then
-			info:SetText(string.format("Version: %s  -  %s: %s", panelData.version, GetString(SI_ADDON_MANAGER_AUTHOR), panelData.author))
+			info:SetText(
+				string.format("Version: %s  -  %s: %s", panelData.version, GetString(SI_ADDON_MANAGER_AUTHOR), panelData.author)
+			)
 		elseif panelData.author then
 			info:SetText(string.format("%s: %s", GetString(SI_ADDON_MANAGER_AUTHOR), panelData.author))
 		else
-			info:SetText("Version: "..panelData.version)
+			info:SetText("Version: " .. panelData.version)
 		end
 	end
 
-	control.container = wm:CreateControlFromVirtual("LAMAddonPanelContainer"..LAMCreateControl.scrollCount, control, "ZO_ScrollContainer")
+	control.container =
+		wm:CreateControlFromVirtual("LAMAddonPanelContainer" .. LAMCreateControl.scrollCount, control, "ZO_ScrollContainer")
 	LAMCreateControl.scrollCount = LAMCreateControl.scrollCount + 1
 	local container = control.container
 	container:SetAnchor(TOPLEFT, control.info or label, BOTTOMLEFT, 0, 20)
@@ -112,12 +117,15 @@ function LAMCreateControl.panel(parent, panelData, controlName)
 		defaultButton:SetText(GetString(SI_OPTIONS_DEFAULTS))
 		defaultButton:SetDimensions(200, 30)
 		defaultButton:SetAnchor(TOPLEFT, control, BOTTOMLEFT, 0, 2)
-		defaultButton:SetHandler("OnClicked", function()
+		defaultButton:SetHandler(
+			"OnClicked",
+			function()
 				ZO_Dialogs_ShowDialog("LAM_DEFAULTS", {control})
-			end)
+			end
+		)
 	end
 
-	if panelData.registerForRefresh and not callbackRegistered then	--don't want to register our callback more than once
+	if panelData.registerForRefresh and not callbackRegistered then --don't want to register our callback more than once
 		cm:RegisterCallback("LAM-RefreshPanel", RefreshPanel)
 		callbackRegistered = true
 	end
@@ -127,6 +135,5 @@ function LAMCreateControl.panel(parent, panelData, controlName)
 
 	return control
 end
-
 
 -- vi: noexpandtab
