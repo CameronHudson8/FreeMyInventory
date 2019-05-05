@@ -1,6 +1,6 @@
 FreeMyInventory = FreeMyInventory or {}
 
-local onGuildSelfLeftGuild = function()
+local onGuildSelfJoinedGuild = function()
     -- if FMI.dropDownInit then
     --     return
     -- end
@@ -45,4 +45,4 @@ local onGuildSelfLeftGuild = function()
     -- FMI.dropDownInit = false
 end
 
-FreeMyInventory.onGuildSelfLeftGuild = onGuildSelfLeftGuild
+FreeMyInventory.onGuildSelfJoinedGuild = onGuildSelfJoinedGuild

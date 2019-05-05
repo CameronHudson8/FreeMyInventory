@@ -19,6 +19,7 @@ models\MyClass.lua
 ; Handlers
 handlers\onAddOnLoaded.lua
 handlers\onCloseTradingHouse.lua
+handlers\onGuildSelfJoinedGuild.lua
 handlers\onGuildSelfLeftGuild.lua
 handlers\onOpenTradingHouse.lua
 handlers\onPlayerActivated.lua

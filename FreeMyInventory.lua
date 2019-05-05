@@ -12,6 +12,7 @@ local addOnName = FreeMyInventory.name
 -- Load handlers
 local onAddOnLoaded = FreeMyInventory.onAddOnLoaded
 local onCloseTradingHouse = FreeMyInventory.onCloseTradingHouse
+local onGuildSelfJoinedGuild = FreeMyInventory.onGuildSelfJoinedGuild
 local onGuildSelfLeftGuild = FreeMyInventory.onGuildSelfLeftGuild
 local onOpenTradingHouse = FreeMyInventory.onOpenTradingHouse
 local onPlayerActivated = FreeMyInventory.onPlayerActivated
