@@ -1,156 +1,157 @@
-FMI.config = {}
+FreeMyInventory = FreeMyInventory or {}
 
-function FMI.config.create()
-    local lam2 = LibStub:GetLibrary("LibAddonMenu-2.0")
+-- Import other stuff (from configuration\configuration.lua)
+local lang = FreeMyInventory.lang
+local author = FreeMyInventory.Author
+local version = FreeMyInventory.Version
+local config = FreeMyInventory.config
+local defaults = FreeMyInventory.defaults
+local language_options = FreeMyInventory.language_options
+local data = FreeMyInventory.data
 
-    local panelIdentifier = "FMIpanel"
+-- Be careful: There is another file (and associated property) called "configuration".
+local config = {
+    create = function()
+        local lam2 = LibStub:GetLibrary("LibAddonMenu-2.0")
 
-    local settingsPanel = {
-        type = "panel",
-        name = FMI.lang.core.addonName,
-        displayName = FMI.lang.core.coloredAddonName,
-        author = FMI.Author,
-        version = FMI.Version,
-        registerForRefresh = true,
-        registerForDefaults = true
-    }
+        local panelIdentifier = "FMIpanel"
 
-    local settingsMenu = {
-        [1] = {
-            type = "header",
-            name = FMI.lang.config.gen_hdr,
-            width = "full"
-        },
-        [2] = {
-            type = "checkbox",
-            name = FMI.lang.config.gen_dbg_lbl,
-            tooltip = FMI.lang.config.gen_dbg_tip,
-            getFunc = FMI.config.getDebug,
-            setFunc = FMI.config.setDebug,
-            width = "full",
-            warning = FMI.lang.config.gen_dbg_warn,
-            default = FMI.defaults.showdebug
-        },
-        [3] = {
-            type = "slider",
-            name = FMI.lang.config_filt_markdown_lbl,
-            tooltip = FMI.lang.config_filt_markdown_tip,
-            min = 0,
-            max = 99,
-            step = 1,
-            getFunc = FMI.config.getMarkdown,
-            setFunc = FMI.config.setMarkdown,
-            default = FMI.defaults.undercutPerc
-        },
-        [4] = {
-            type = "dropdown",
-            name = FMI.lang.config.lang_lbl,
-            tooltip = FMI.lang.config.lang_tip,
-            choices = FMI.language_options,
-            getFunc = FMI.config.getLang,
-            setFunc = FMI.config.setLang,
-            warning = FMI.lang.config.lang_warn,
-            default = FMI.defaults.language
-        },
-        [5] = {
-            type = "header",
-            name = FMI.lang.config.tooltip_hdr,
-            width = "full"
-        },
-        [6] = {
-            type = "description",
-            text = FMI.lang.config.tooltip_desc,
-            width = "full"
-        },
-        [7] = {
-            type = "checkbox",
-            name = FMI.lang.config.tooltip_session_lbl,
-            tooltip = FMI.lang.config.tooltip_session_tip,
-            getFunc = FMI.config.getSess,
-            setFunc = FMI.config.setSess,
-            width = "full",
-            default = FMI.defaults.tooltips.session
-        },
-        [8] = {
-            type = "checkbox",
-            name = FMI.lang.config.tooltip_history_lbl,
-            tooltip = FMI.lang.config.tooltip_history_tip,
-            getFunc = FMI.config.getHist,
-            setFunc = FMI.config.setHist,
-            width = "full",
-            default = FMI.defaults.tooltips.history
-        },
-        [9] = {
-            type = "checkbox",
-            name = FMI.lang.config.tooltip_recom_lbl,
-            tooltip = FMI.lang.config.tooltip_recom_tip,
-            getFunc = FMI.config.getRecom,
-            setFunc = FMI.config.setRecom,
-            width = "full",
-            default = FMI.defaults.tooltips.recommend
+        local settingsPanel = {
+            type = "panel",
+            name = lang.core.addonName,
+            displayName = lang.core.coloredAddonName,
+            author = author,
+            version = version,
+            registerForRefresh = true,
+            registerForDefaults = true
         }
-    }
 
-    lam2:RegisterAddonPanel(panelIdentifier, settingsPanel)
-    lam2:RegisterOptionControls(panelIdentifier, settingsMenu)
-end
+        local settingsMenu = {
+            [1] = {
+                type = "header",
+                name = lang.config.gen_hdr,
+                width = "full"
+            },
+            [2] = {
+                type = "checkbox",
+                name = lang.config.gen_dbg_lbl,
+                tooltip = lang.config.gen_dbg_tip,
+                getFunc = config.getDebug,
+                setFunc = config.setDebug,
+                width = "full",
+                warning = lang.config.gen_dbg_warn,
+                default = defaults.showdebug
+            },
+            [3] = {
+                type = "slider",
+                name = lang.config_filt_markdown_lbl,
+                tooltip = lang.config_filt_markdown_tip,
+                min = 0,
+                max = 99,
+                step = 1,
+                getFunc = config.getMarkdown,
+                setFunc = config.setMarkdown,
+                default = defaults.undercutPerc
+            },
+            [4] = {
+                type = "dropdown",
+                name = lang.config.lang_lbl,
+                tooltip = lang.config.lang_tip,
+                choices = language_options,
+                getFunc = config.getLang,
+                setFunc = config.setLang,
+                warning = lang.config.lang_warn,
+                default = defaults.language
+            },
+            [5] = {
+                type = "header",
+                name = lang.config.tooltip_hdr,
+                width = "full"
+            },
+            [6] = {
+                type = "description",
+                text = lang.config.tooltip_desc,
+                width = "full"
+            },
+            [7] = {
+                type = "checkbox",
+                name = lang.config.tooltip_session_lbl,
+                tooltip = lang.config.tooltip_session_tip,
+                getFunc = config.getSess,
+                setFunc = config.setSess,
+                width = "full",
+                default = defaults.tooltips.session
+            },
+            [8] = {
+                type = "checkbox",
+                name = lang.config.tooltip_history_lbl,
+                tooltip = lang.config.tooltip_history_tip,
+                getFunc = config.getHist,
+                setFunc = config.setHist,
+                width = "full",
+                default = defaults.tooltips.history
+            },
+            [9] = {
+                type = "checkbox",
+                name = lang.config.tooltip_recom_lbl,
+                tooltip = lang.config.tooltip_recom_tip,
+                getFunc = config.getRecom,
+                setFunc = config.setRecom,
+                width = "full",
+                default = defaults.tooltips.recommend
+            }
+        }
 
-----Dummy
-function FMI.config.getDummy()
-end
-function FMI.config.setDummy(value)
-end
+        lam2:RegisterAddonPanel(panelIdentifier, settingsPanel)
+        lam2:RegisterOptionControls(panelIdentifier, settingsMenu)
+    end,
+    ----Dummy
+    getDummy = function()
+    end,
+    setDummy = function(value)
+    end,
+    ---- GS Update lang
+    getLang = function()
+        return data.language
+    end,
+    setLang = function(value)
+        data.language = value
+    end,
+    ---- Mark Down
+    getMarkdown = function()
+        return data.undercutPerc
+    end,
+    setMarkdown = function(value)
+        data.undercutPerc = value
+    end,
+    ---- Manage debug
+    getDebug = function()
+        return data.showdebug
+    end,
+    setDebug = function(value)
+        data.showdebug = value
+    end,
+    ---- Manage Session Tooltip
+    getSess = function()
+        return data.tooltips.session
+    end,
+    setSess = function(value)
+        data.tooltips.session = value
+    end,
+    ---- Manage History Tooltip
+    getHist = function()
+        return data.tooltips.history
+    end,
+    setHist = function(value)
+        data.tooltips.history = value
+    end,
+    ---- Manage Recommendation Tooltip
+    getRecom = function()
+        return data.tooltips.recommend
+    end,
+    setRecom = function(value)
+        data.tooltips.recommend = value
+    end
+}
 
----- GS Update lang
-function FMI.config.getLang()
-    return FMI.data.language
-end
-
-function FMI.config.setLang(value)
-    FMI.data.language = value
-end
-
----- Mark Down
-function FMI.config.getMarkdown()
-    return FMI.data.undercutPerc
-end
-
-function FMI.config.setMarkdown(value)
-    FMI.data.undercutPerc = value
-end
-
----- Manage debug
-function FMI.config.getDebug()
-    return FMI.data.showdebug
-end
-
-function FMI.config.setDebug(value)
-    FMI.data.showdebug = value
-end
-
----- Manage Session Tooltip
-function FMI.config.getSess()
-    return FMI.data.tooltips.session
-end
-
-function FMI.config.setSess(value)
-    FMI.data.tooltips.session = value
-end
-
----- Manage History Tooltip
-function FMI.config.getHist()
-    return FMI.data.tooltips.history
-end
-
-function FMI.config.setHist(value)
-    FMI.data.tooltips.history = value
-end
-
----- Manage Recommendation Tooltip
-function FMI.config.getRecom()
-    return FMI.data.tooltips.recommend
-end
-
-function FMI.config.setRecom(value)
-    FMI.data.tooltips.recommend = value
-end
+FreeMyInventory.config = config

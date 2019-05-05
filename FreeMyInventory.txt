@@ -1,15 +1,26 @@
-﻿; This Add-on is not created by, affiliated with or sponsored by ZeniMax
+; This Add-on is not created by, affiliated with or sponsored by ZeniMax
 ; Media Inc. or its affiliates. The Elder Scrolls® and related logos are
 ; registered trademarks or trademarks of ZeniMax Media Inc. in the United
 ; States and/or other countries. All rights reserved.
-## Title: |c2080D0Free My Inventory|r
-## Author: Kronn8/lintydruid/Sephiroth08/tridman/dOpiate
+## Title: Free My Inventory
+## Author: Kronn8
 ## Description: Uses MasterMerchant data to suggest the best items to sell.
 ## Version: 1
-## APIVersion: 100021
-## SavedVariables: FMI_data
+## APIVersion: 100026
+## SavedVariables: FreeMyInventory_data
 ## OptionalDependsOn: LibStub LibAddonMenu-2.0 BugEater AwesomeGuildStore MasterMerchant pChat
 
+; Configuration
+configuration\configuration.lua
+
+; Classes
+models\MyClass.lua
+
+; Handlers
+handlers\onAddOnLoaded.lua
+handlers\onPlayerActivated.lua
+
+; Other stuff (To be checked during refactoring)
 Libs\LibStub\LibStub.lua
 Libs\LibAddonMenu-2.0\LibAddonMenu-2.0.lua
 Libs\LibAddonMenu-2.0\controls\panel.lua
@@ -24,23 +35,13 @@ Libs\LibAddonMenu-2.0\controls\editbox.lua
 Libs\LibAddonMenu-2.0\controls\header.lua
 Libs\LibAddonMenu-2.0\controls\slider.lua
 Libs\LibAddonMenu-2.0\controls\texture.lua
-
 timer.lua
 tooltips.lua
-
-FreeMyInventory.lua
 FreeMyInventoryUtils.lua
-
-
-lang\en.lua
-lang\de.lua
-lang\fr.lua
-lang\ru.lua
-
-FreeMyInventory.xml
-
+; FreeMyInventory.xml   Something about this file is messing up FreeMyInventory.configuration
 locale.lua
-
 settings.lua
-
 bindings.xml
+
+; Main file
+FreeMyInventory.lua
