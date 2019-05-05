@@ -10,13 +10,32 @@ end
 local addOnName = FreeMyInventory.name
 
 -- Load handlers
-local onPlayerActivated = FreeMyInventory.onPlayerActivated
 local onAddOnLoaded = FreeMyInventory.onAddOnLoaded
+local onCloseTradingHouse = FreeMyInventory.onCloseTradingHouse
+local onGuildSelfLeftGuild = FreeMyInventory.onGuildSelfLeftGuild
+local onOpenTradingHouse = FreeMyInventory.onOpenTradingHouse
+local onPlayerActivated = FreeMyInventory.onPlayerActivated
+local onScreenResized = FreeMyInventory.onScreenResized
+local onTradingHouseSearchResultsReceived = FreeMyInventory.onTradingHouseSearchResultsReceived
+local onTradingHouseStatusReceived = FreeMyInventory.onTradingHouseStatusReceived
 
 -- Register handler functions
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_PLAYER_ACTIVATED, onPlayerActivated)
 EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_CLOSE_TRADING_HOUSE, onCloseTradingHouse)
 
+-- TODO The following two handlers do the same thing. Make them call a function of a common class.
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_GUILD_SELF_JOINED_GUILD, onGuildSelfJoinedGuild)
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_GUILD_SELF_LEFT_GUILD, onGuildSelfJoinedGuild)
+
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_OPEN_TRADING_HOUSE, onOpenTradingHouse)
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_PLAYER_ACTIVATED, onPlayerActivated)
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_SCREEN_RESIZED, onScreenResized)
+EVENT_MANAGER:RegisterForEvent(
+    addOnName,
+    EVENT_TRADING_HOUSE_SEARCH_RESULTS_RECEIVED,
+    onTradingHouseSearchResultsReceived
+)
+EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_TRADING_HOUSE_STATUS_RECEIVED, onTradingHouseStatusReceived)
 -- TODO Refactor from here down
 
 -- -------------------------------Output --------------------
@@ -55,107 +74,6 @@ EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
 --         FMI.data.language = "Auto"
 --     end
 --     --		FMI.GetAPIVersion = function() return 2 end 'will update again next DLC - dOpiate
--- end
-
--- function FMI.Initialize(eventCode, addOnName)
---     if (addOnName == "FreeMyInventory") then
---         EVENT_MANAGER:UnregisterForEvent("FreeMyInventory", EVENT_ADD_ON_LOADED)
-
---         --	Load saved vars
---         FMI.data = ZO_SavedVars:NewAccountWide("FMI_data", 1, nil, FMI.defaults, nil)
-
---         -- Data Clean-up/Upgrade
---         FMI.upgradeData()
---         FMI.lang.Set(FMI.data.language) --- Initialise Locale
---         --d(type(FMI))
---         --d(type(FMI.data))
---         --d(type(FMI.data.window)) --not nil (table)
-
---         FMI.config.create() -- config window
---         --d(type(FMI))
---         --d(type(FMI.data))
---         --d(type(FMI.data.window)) --nil??
-
---         --Window Co-ord Managment
---         FreeMyInventory:SetHandler("OnMoveStop", FMI.SetFrameCoords)
---         FreeMyInventory:SetAnchor(CENTER, GuiRoot, CENTER, FMI.data.window.x, FMI.data.window.y)
---         FreeMyInventory:SetMovable(true)
-
---         --Main Init
---         if #FMI.ResultControls == 0 then
---             local resultLineOffsetX = 0
---             local resultLineOffsetY = 0
-
---             for i = 1, 10 do
---                 local control =
---                     CreateControlFromVirtual(
---                     "FreeMyInventoryResult",
---                     FreeMyInventoryResultsBG,
---                     "FreeMyInventoryResult",
---                     i
---                 )
---                 control:SetSimpleAnchorParent(
---                     resultLineOffsetX,
---                     resultLineOffsetY + ((control:GetHeight() + 2) * (i - 1))
---                 )
---                 control:SetText(i .. ":")
-
---                 FMI.ResultControls[i] = control
---             end
-
---             local bg = CreateControlFromVirtual("FreeMyInventoryEditBg", FreeMyInventory, "ZO_EditBackdrop")
---             bg:SetParent(FreeMyInventory)
---             bg:SetDimensions(300, 28)
---             bg:SetSimpleAnchorParent(FreeMyInventory:GetNamedChild("ForLabel"):GetWidth(), 5)
-
---             FreeMyInventoryTerms = CreateControlFromVirtual("FreeMyInventoryTerms", bg, "ZO_DefaultEditForBackdrop")
---             FreeMyInventoryTerms:SetParent(bg)
---             FreeMyInventoryTerms:SetDimensions(300, 28)
---             FreeMyInventoryTerms:SetResizeToFitDescendents(false)
---             FreeMyInventoryTerms:SetMouseEnabled(true)
---             FreeMyInventoryTerms:SetText("")
---             FreeMyInventoryTerms:SetHandler("OnMouseDoubleClick", FMI.GetCurrentSellName) -----  Added by LintyDruid
-
---             local gdd =
---                 CreateControlFromVirtual("FreeMyInventoryGuildCombo", FreeMyInventory, "FreeMyInventoryDropdown")
---             gdd:SetDimensions(300, 28)
---             gdd:SetSimpleAnchorParent(FreeMyInventory:GetNamedChild("GuildLabel"):GetWidth(), bg:GetHeight() + 10)
-
---             FreeMyInventoryResultsBG:SetMouseEnabled(true)
---             FreeMyInventoryResultsBG:SetHandler("OnMouseWheel", FMI.OnSliderMouseWheel)
-
---             FMI.ResultsSlider = FMI.CreateSlider("FreeMyInventorySlider", FreeMyInventory)
---             FMI.ResultsSlider:SetAnchor(LEFT, FreeMyInventoryResultsBG, RIGHT, 0, 0)
---             FMI.ResultsSlider:SetHandler("OnValueChanged", FMI.OnSliderMoved)
-
---             local pane = ZO_TradingHouseMenuBar
-
---             local toggleButton = CreateControlFromVirtual("FreeMyInventoryToggleButton", pane, "ZO_DefaultButton")
---             toggleButton:SetAnchor(BOTTOM, pane, TOPLEFT, left, top)
---             toggleButton:SetDimensions(195, 31)
---             toggleButton:SetHidden(false)
---             toggleButton:SetFont("ZoFontGameBold")
---             toggleButton:SetText(FMI.lang.gui.main_cmd)
---             toggleButton:SetHandler(
---                 "OnMouseDown",
---                 function()
---                     FMI.PopulateGuildList()
---                     FMI.GuildStoreSearchToggle()
---                 end
---             )
---         end
-
---         FMI.Reset()
-
---         FMI.ClearSessionData()
-
---         FMI.SetCanContinueSearch()
-
---         FreeMyInventoryFindMatchesButton:SetHidden(false)
-
---         EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_GUILD_SELF_JOINED_GUILD, FMI.PopulateGuildList)
---         EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_GUILD_SELF_LEFT_GUILD, FMI.PopulateGuildList)
---     end
 -- end
 
 -- function FMI.ClearSessionData()
@@ -539,58 +457,6 @@ EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
 --     FMI.SetCanContinueSearch()
 -- end
 
--- function FMI.ResultsReceived(eventId, guildId, numItemsOnPage, currentPage, hasMorePages)
---     FMI.debug("Results (" .. FMI.State .. ")")
---     FreeMyInventoryStatus:SetText("")
-
---     FMI.data.lastSearchRequest.guildId = guildId
---     FMI.data.lastSearchRequest.currentPage = currentPage
-
---     if FMI.State == "AWAITING_RESULTS" then
---         FMI.CollateResults(guildId, numItemsOnPage, currentPage, hasMorePages)
-
---         if (hasMorePages) then
---             FMI.queueTradingHouseSearch(currentPage + 1, TRADING_HOUSE_SORT_SALE_PRICE, true)
---             FreeMyInventoryCounter:SetText(string.format(FMI.lang.gui.search, guildId, currentPage + 1))
---         else
---             local resultCount = table.getn(FMI.data.search_results)
---             FreeMyInventoryMatchCounter:SetText(FMI.lang.gui.searchready)
---             FreeMyInventoryCounter:SetText(string.format(FMI.lang.gui.found, FMI.last_search_count, guildId))
---             FMI.ConcludeSearch()
---         end
---     elseif FMI.State == "AWAITING_RESULTS_ALL" then
---         FMI.debug("Results for all [" .. guildId .. "]")
-
---         FMI.CollateResults(guildId, numItemsOnPage, currentPage, hasMorePages)
-
---         if (hasMorePages) then
---             FMI.debug("Next Page...")
---             FMI.queueTradingHouseSearch(currentPage + 1, TRADING_HOUSE_SORT_SALE_PRICE, true)
---             FreeMyInventoryCounter:SetText(string.format(FMI.lang.gui.retrv, guildId, currentPage + 1))
---         elseif guildId ~= FMI.Guilds[#FMI.Guilds].Id then
---             local canBuyFrom = true
-
---             local nextTradingGuild = FMI.nextTradingHouse(guildId)
-
---             FMI.debug("Next Guild is " .. nextTradingGuild .. "...")
-
---             if nextTradingGuild == -1 or guildId == 0 then
---                 local resultCount = table.getn(FMI.data.search_results)
---                 FreeMyInventoryMatchCounter:SetText(FMI.lang.gui.searchready)
---                 FreeMyInventoryCounter:SetText(string.format(FMI.lang.gui.foundall, FMI.last_search_count))
---                 --  FreeMyInventoryFindMatchesButton:SetHidden(false)
---                 FMI.SetState("NONE")
---             else
---                 FMI.SaveSwitchTradingHouseGuild("", guildId + 1)
---             end
---         else
---             local resultCount = table.getn(FMI.data.search_results)
---             FreeMyInventoryCounter:SetText(string.format(FMI.lang.gui.foundall, FMI.last_search_count))
---             FMI.ConcludeSearch()
---         end
---     end
--- end
-
 -- function FMI.SaveSwitchTradingHouseGuild(name, guildId)
 --     local delay = GetTradingHouseCooldownRemaining()
 
@@ -874,103 +740,6 @@ EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
 --     )
 
 --     return keys
--- end
-
--- function FMI.GuildStoreOpened(event)
---     d("Guild store opened!")
-
---     local total_inv_counts, total_inv_links = FMI.CondenseInv()
---     local item_data = FMI.ComputeBestItemsToSell(total_inv_counts, total_inv_links)
---     local item_data_keys =
---         FMI.SortByKeys(
---         item_data,
---         function(a, b)
---             return a < b
---         end
---     )
-
---     for _, key in ipairs(item_data_keys) do
---         d(
---             string.format(
---                 "%d x %s @ %.2f = %d",
---                 total_inv_counts[key],
---                 key,
---                 item_data[key]["optimalPrice"],
---                 item_data[key]["totalValue"]
---             )
---         )
---     end
--- end
-
--- function FMI.GuildStoreClosed()
---     if FreeMyInventory:IsHidden() == false then
---         FreeMyInventory:ToggleHidden()
---     end
--- end
-
--- function FMI.PopulateGuildList()
---     if FMI.dropDownInit then
---         return
---     end
-
---     FMI.dropDownInit = true
-
---     local dropdown = ZO_ComboBox_ObjectFromContainer(FreeMyInventory:GetNamedChild("GuildCombo"))
---     FMI.CurrentGuildIndex = 1
---     FMI.Guilds = {}
-
---     dropdown:ClearItems()
-
---     local entry =
---         dropdown:CreateItemEntry(
---         FMI.lang.gui.guild_all,
---         function()
---         end
---     )
---     dropdown:AddItem(entry)
-
---     local numGuilds = GetNumGuilds()
---     local currentIndex = 0
-
---     while #FMI.Guilds < numGuilds do
---         local resultId = GetGuildId(currentIndex)
-
---         if resultId ~= 0 then
---             local name = GetGuildName(resultId)
-
---             local color = "|cFFFFFF"
-
---             if FMI.canUseTradingHouse(resultId) == false then
---                 color = "|cff0000"
---             else
---                 color = "|cFFFF00"
---             end
-
---             FMI.debug("Dropdown add ::" .. string.format(FMI.lang.gui.guild_templ, resultId, color, name))
-
---             local formattedName = string.format(FMI.lang.gui.guild_templ, resultId, color, name)
-
---             local entry =
---                 dropdown:CreateItemEntry(
---                 string.format(FMI.lang.gui.guild_templ, resultId, color, name),
---                 function()
---                 end
---             )
---             dropdown:AddItem(entry)
-
---             table.insert(FMI.Guilds, {Id = resultId, Name = name, FormattedName = formattedName})
---         end
-
---         currentIndex = currentIndex + 1
---     end
-
---     dropdown:SetSelectedItem(FMI.lang.gui.guild_all)
-
---     FMI.dropDownInit = false
--- end
-
--- function FMI.StatusReceived()
---     -- FMI.PopulateGuildList()
 -- end
 
 -- function FMI.GetGuildIdFromDropdown()
@@ -1544,20 +1313,5 @@ EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
 -- ---------------------------------------- Event Handling ----------------------------------------------
 
 -- SLASH_COMMANDS["/FMI"] = FMI.Command
-
--- EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_ADD_ON_LOADED, FMI.Initialize)
--- EVENT_MANAGER:RegisterForEvent(
---     "FreeMyInventory",
---     EVENT_SCREEN_RESIZED,
---     function(...)
---         PopupTooltip:SetHidden(true)
---         PopupTooltip:ClearLines()
---         PopupTooltipIcon:SetHidden(true)
---     end
--- )
--- EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_TRADING_HOUSE_SEARCH_RESULTS_RECEIVED, FMI.ResultsReceived)
--- EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_TRADING_HOUSE_STATUS_RECEIVED, FMI.StatusReceived)
--- EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_OPEN_TRADING_HOUSE, FMI.GuildStoreOpened)
--- EVENT_MANAGER:RegisterForEvent("FreeMyInventory", EVENT_CLOSE_TRADING_HOUSE, FMI.GuildStoreClosed)
 
 -- ld_tooltip.additemtooltip("FMI_main", "|cFFF000Free My Inventory", FMI.SetTooltip)

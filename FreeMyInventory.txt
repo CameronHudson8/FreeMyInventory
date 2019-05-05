@@ -18,7 +18,13 @@ models\MyClass.lua
 
 ; Handlers
 handlers\onAddOnLoaded.lua
+handlers\onCloseTradingHouse.lua
+handlers\onGuildSelfLeftGuild.lua
+handlers\onOpenTradingHouse.lua
 handlers\onPlayerActivated.lua
+handlers\onScreenResized.lua
+handlers\onTradingHouseSearchResultsReceived.lua
+handlers\onTradingHouseStatusReceived.lua
 
 ; Other stuff (To be checked during refactoring)
 Libs\LibStub\LibStub.lua
@@ -36,7 +42,7 @@ Libs\LibAddonMenu-2.0\controls\header.lua
 Libs\LibAddonMenu-2.0\controls\slider.lua
 Libs\LibAddonMenu-2.0\controls\texture.lua
 timer.lua
-tooltips.lua
+; tooltips.lua  This is throwing an exception.
 FreeMyInventoryUtils.lua
 ; FreeMyInventory.xml   Something about this file is messing up FreeMyInventory.configuration
 locale.lua
