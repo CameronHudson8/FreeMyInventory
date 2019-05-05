@@ -10,33 +10,22 @@ end
 local addOnName = FreeMyInventory.name
 
 -- Load handlers
-local onAddOnLoaded = FreeMyInventory.onAddOnLoaded
-local onCloseTradingHouse = FreeMyInventory.onCloseTradingHouse
-local onGuildSelfJoinedGuild = FreeMyInventory.onGuildSelfJoinedGuild
-local onGuildSelfLeftGuild = FreeMyInventory.onGuildSelfLeftGuild
-local onOpenTradingHouse = FreeMyInventory.onOpenTradingHouse
-local onPlayerActivated = FreeMyInventory.onPlayerActivated
-local onScreenResized = FreeMyInventory.onScreenResized
-local onTradingHouseSearchResultsReceived = FreeMyInventory.onTradingHouseSearchResultsReceived
-local onTradingHouseStatusReceived = FreeMyInventory.onTradingHouseStatusReceived
+local eventsAndhandlers = {
+    [EVENT_ADD_ON_LOADED] = "onAddOnLoaded",
+    [EVENT_CLOSE_TRADING_HOUSE] = "onCloseTradingHouse",
+    -- TODO The following two handlers do the same thing. Make them call a function of a common class.
+    [EVENT_GUILD_SELF_JOINED_GUILD] = "onGuildSelfJoinedGuild",
+    [EVENT_GUILD_SELF_LEFT_GUILD] = "onGuildSelfJoinedGuild",
+    [EVENT_OPEN_TRADING_HOUSE] = "onOpenTradingHouse",
+    [EVENT_PLAYER_ACTIVATED] = "onPlayerActivated",
+    [EVENT_SCREEN_RESIZED] = "onScreenResized",
+    [EVENT_TRADING_HOUSE_STATUS_RECEIVED] = "onTradingHouseStatusReceived"
+}
 
--- Register handler functions
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_ADD_ON_LOADED, onAddOnLoaded)
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_CLOSE_TRADING_HOUSE, onCloseTradingHouse)
+for event, handlerName in pairs(eventsAndhandlers) do
+    EVENT_MANAGER:RegisterForEvent(addOnName, event, FreeMyInventory[handlerName])
+end
 
--- TODO The following two handlers do the same thing. Make them call a function of a common class.
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_GUILD_SELF_JOINED_GUILD, onGuildSelfJoinedGuild)
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_GUILD_SELF_LEFT_GUILD, onGuildSelfJoinedGuild)
-
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_OPEN_TRADING_HOUSE, onOpenTradingHouse)
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_PLAYER_ACTIVATED, onPlayerActivated)
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_SCREEN_RESIZED, onScreenResized)
-EVENT_MANAGER:RegisterForEvent(
-    addOnName,
-    EVENT_TRADING_HOUSE_SEARCH_RESULTS_RECEIVED,
-    onTradingHouseSearchResultsReceived
-)
-EVENT_MANAGER:RegisterForEvent(addOnName, EVENT_TRADING_HOUSE_STATUS_RECEIVED, onTradingHouseStatusReceived)
 -- TODO Refactor from here down
 
 -- -------------------------------Output --------------------

@@ -24,7 +24,6 @@ handlers\onGuildSelfLeftGuild.lua
 handlers\onOpenTradingHouse.lua
 handlers\onPlayerActivated.lua
 handlers\onScreenResized.lua
-handlers\onTradingHouseSearchResultsReceived.lua
 handlers\onTradingHouseStatusReceived.lua
 
 ; Other stuff (To be checked during refactoring)
