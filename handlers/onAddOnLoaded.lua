@@ -12,18 +12,17 @@ local onAddOnLoaded = function(event, addonName)
     EVENT_MANAGER:UnregisterForEvent(FreeMyInventory.name, EVENT_ADD_ON_LOADED)
 
     SavedDataLoader.load()
+    SavedDataLoader.upgrade()
 
-    -- -- Data Clean-up/Upgrade
-    -- FMI.upgradeData()
-    -- FMI.lang.Set(FMI.data.language) --- Initialise Locale
-    -- --d(type(FMI))
-    -- --d(type(FMI.data))
-    -- --d(type(FMI.data.window)) --not nil (table)
+    -- TODO Check and refactor from here down
 
-    -- FMI.config.create() -- config window
-    -- --d(type(FMI))
-    -- --d(type(FMI.data))
-    -- --d(type(FMI.data.window)) --nil??
+    -- Initialise Locale
+    -- TODO This may not be necessary anymore
+    -- FreeMyInventory.lang.Set(FreeMyInventory.data.language)
+
+    -- config window
+    -- TODO This may not be necessary anymore
+    -- FreeMyInventory.config.create()
 
     -- --Window Co-ord Managment
     -- FreeMyInventory:SetHandler("OnMoveStop", FMI.SetFrameCoords)

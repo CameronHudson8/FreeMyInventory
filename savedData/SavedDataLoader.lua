@@ -2,15 +2,16 @@ FreeMyInventory = FreeMyInventory or {}
 
 -- Static functions and variables
 local SavedDataLoader = {
-    SAVED_VARIABLE_TABLE = "FreeMyInventory_data",
-    VERSION = 1,
-    NAMESPACE = nil,
-    DEFAULTS = FreeMyInventory.defaultSavedData,
-    PROFILE = nil,
+    DEFAULT_SAVED_DATA = FreeMyInventory.defaultSavedData,
     DISPLAY_NAME = nil,
     load = function()
         return ZO_SavedVars:NewAccountWide(SAVED_VARIABLE_TABLE, VERSION, NAMESPACE, DEFAULTS, PROFILE, DISPLAY_NAME)
-    end
+    end,
+    NAMESPACE = nil,
+    PROFILE = nil,
+    SAVED_VARIABLE_TABLE = "FreeMyInventory_data",
+    UPGRADE_SAVED_DATA = FreeMyInventory.upgradeSavedData,
+    VERSION = 1
 }
 
 -- Begin boilerplate class code
@@ -39,10 +40,18 @@ function SavedDataLoader.load()
         SavedDataLoader.SAVED_VARIABLE_TABLE,
         SavedDataLoader.VERSION,
         SavedDataLoader.NAMESPACE,
-        SavedDataLoader.DEFAULTS,
+        SavedDataLoader.DEFAULT_SAVED_DATA,
         SavedDataLoader.PROFILE,
         SavedDataLoader.DISPLAY_NAME
     )
+end
+
+function SavedDataLoader.upgrade()
+    for key, value in pairs(SavedDataLoader.UPGRADE_SAVED_DATA) do
+        if FreeMyInventory.data[key] == nil then
+            FreeMyInventory.data[key] = value
+        end
+    end
 end
 
 FreeMyInventory.SavedDataLoader = SavedDataLoader

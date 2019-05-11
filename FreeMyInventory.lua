@@ -6,10 +6,10 @@ for key, value in pairs(configuration) do
     FreeMyInventory[key] = value
 end
 
--- Constants
+-- Load constants
 local addOnName = FreeMyInventory.name
 
--- Load handlers
+-- Register handlers
 local eventsAndhandlers = {
     [EVENT_ADD_ON_LOADED] = "onAddOnLoaded",
     [EVENT_CLOSE_TRADING_HOUSE] = "onCloseTradingHouse",
@@ -21,7 +21,6 @@ local eventsAndhandlers = {
     [EVENT_SCREEN_RESIZED] = "onScreenResized",
     [EVENT_TRADING_HOUSE_STATUS_RECEIVED] = "onTradingHouseStatusReceived"
 }
-
 for event, handlerName in pairs(eventsAndhandlers) do
     EVENT_MANAGER:RegisterForEvent(addOnName, event, FreeMyInventory[handlerName])
 end
@@ -41,31 +40,6 @@ end
 --     end
 -- end
 -- ------------------------------ Initialize------------------------------------
--- function FMI.upgradeData()
---     if FMI.data.showdebug == nil then
---         FMI.data.showdebug = false
---     end
-
---     if FMI.data.itemData == nil then
---         FMI.data.itemData = {}
---     end
---     if FMI.data.tooltips == nil then
---         FMI.data.tooltips = {session = true, history = true, recommend = true}
---     end
-
---     if FMI.data.search_results == nil then
---         FMI.data.search_results = {}
---     end
---     if FMI.data.last_search == nil then
---         FMI.data.last_search = ""
---     end
-
---     if FMI.data.language == nil then
---         FMI.data.language = "Auto"
---     end
---     --		FMI.GetAPIVersion = function() return 2 end 'will update again next DLC - dOpiate
--- end
-
 -- function FMI.ClearSessionData()
 --     ---Reset Session data
 --     for id, data in pairs(FMI.data.itemData) do

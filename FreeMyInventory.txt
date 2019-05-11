@@ -15,7 +15,11 @@ configuration\configuration.lua
 
 ; Classes
 models\MyClass.lua
-tools\SavedDataLoader.lua
+
+; Default saved data
+savedData\defaultSavedData.lua
+savedData\upgradeSavedData.lua
+savedData\SavedDataLoader.lua
 
 ; Handlers
 handlers\onAddOnLoaded.lua
@@ -26,9 +30,6 @@ handlers\onOpenTradingHouse.lua
 handlers\onPlayerActivated.lua
 handlers\onScreenResized.lua
 handlers\onTradingHouseStatusReceived.lua
-
-; Default saved data
-savedData\defaults.lua
 
 ; Other stuff (To be checked during refactoring)
 Libs\LibStub\LibStub.lua

@@ -3,20 +3,8 @@ FreeMyInventory = FreeMyInventory or {}
 ----- Declare Core Data/Objects
 
 local configuration = {
-    name = "FreeMyInventory",
-    State = "NONE",
-    ResultControls = {},
-    ResultsSlider = nil,
-    StoreItems = {},
-    SearchMatches = {},
-    Terms = nil,
-    CurrentGuildIndex = 1,
-    Guilds = {},
-    dropDownInit = false,
-    last_search_count = 0,
-    language_options = {"Auto", "English", "Deutsch", "Français", "Russian"},
-    Version = "0.15b",
     Author = "Kronn8",
+    CurrentGuildIndex = 1,
     data = {
         window = {x = 0, y = 0},
         undercutPerc = 5, -- Undercut Percentage
@@ -27,14 +15,26 @@ local configuration = {
         language = "Auto",
         lastSearchRequest = {}
     },
-    utils = {},
+    dropDownInit = false,
+    Guilds = {},
     -- Declare Locale Control
     lang = {
         sets = {},
         core = {},
         gui = {},
         config = {}
-    }
+    },
+    language_options = {"Auto", "English", "Deutsch", "Français", "Russian"},
+    last_search_count = 0,
+    name = "FreeMyInventory",
+    ResultControls = {},
+    ResultsSlider = nil,
+    SearchMatches = {},
+    State = "NONE",
+    StoreItems = {},
+    Terms = nil,
+    utils = {},
+    Version = "0.15b"
 }
 
 FreeMyInventory.configuration = configuration
