@@ -1,6 +1,7 @@
 FreeMyInventory = FreeMyInventory or {}
 
-local configuration = FreeMyInventory.configuration
+-- Load classes
+local SavedDataLoader = FreeMyInventory.SavedDataLoader
 
 -- No d() statements will appear if they are called in this function.
 -- To show d() statements on startup, put them in the confirmStartup function.
@@ -8,11 +9,9 @@ local onAddOnLoaded = function(event, addonName)
     if addonName ~= FreeMyInventory.name then
         return
     end
+    EVENT_MANAGER:UnregisterForEvent(FreeMyInventory.name, EVENT_ADD_ON_LOADED)
 
-    EVENT_MANAGER:UnregisterForEvent(FMI.name, EVENT_ADD_ON_LOADED)
-
-    -- --	Load saved vars
-    -- FMI.data = ZO_SavedVars:NewAccountWide("FMI_data", 1, nil, FMI.defaults, nil)
+    SavedDataLoader.load()
 
     -- -- Data Clean-up/Upgrade
     -- FMI.upgradeData()
@@ -93,6 +92,7 @@ local onAddOnLoaded = function(event, addonName)
     -- FMI.SetCanContinueSearch()
 
     -- FreeMyInventoryFindMatchesButton:SetHidden(false)
+    FreeMyInventory.addOnLoaded = true
 end
 
 FreeMyInventory.onAddOnLoaded = onAddOnLoaded

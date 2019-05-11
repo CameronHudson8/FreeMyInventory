@@ -1,0 +1,1 @@
+Your account data is saved in `C:\Users\[username]\Documents\Elder Scrolls Online\liveSavedVariables\[addonName].lua`.

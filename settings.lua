@@ -5,7 +5,7 @@ local lang = FreeMyInventory.lang
 local author = FreeMyInventory.Author
 local version = FreeMyInventory.Version
 local config = FreeMyInventory.config
-local defaults = FreeMyInventory.defaults
+local defaultSavedData = FreeMyInventory.defaultSavedData
 local language_options = FreeMyInventory.language_options
 local data = FreeMyInventory.data
 
