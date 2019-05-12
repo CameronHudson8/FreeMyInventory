@@ -13,13 +13,16 @@
 ; Configuration
 configuration\configuration.lua
 
+; Tools
+tools\Debugger.lua
+
 ; Classes
 models\MyClass.lua
 
 ; Default saved data
-savedData\defaultSavedData.lua
-savedData\upgradeSavedData.lua
-savedData\SavedDataLoader.lua
+saved_data\defaultSavedData.lua
+saved_data\upgradeSavedData.lua
+saved_data\SavedDataLoader.lua
 
 ; Handlers
 handlers\onAddOnLoaded.lua

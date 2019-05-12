@@ -26,10 +26,9 @@ setmetatable(
 )
 -- End boilerplate class code
 
-function SavedDataLoader:new(init)
+function SavedDataLoader:new()
     -- Begin boilerplate class code
     local self = setmetatable({}, SavedDataLoader)
-    self.value = init
     -- End boilerplate class code
 
     return self

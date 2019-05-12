@@ -1,13 +1,10 @@
 FreeMyInventory = FreeMyInventory or {}
 
--- Load configuration
-local configuration = FreeMyInventory.configuration
-for key, value in pairs(configuration) do
-    FreeMyInventory[key] = value
-end
+-- Load constants used in this file
+local addOnName = FreeMyInventory.addOnName
 
--- Load constants
-local addOnName = FreeMyInventory.name
+-- Load classes used in this file
+local Debugger = FreeMyInventory.Debugger
 
 -- Register handlers
 local eventsAndhandlers = {
@@ -27,18 +24,6 @@ end
 
 -- TODO Refactor from here down
 
--- -------------------------------Output --------------------
--- function FMI.message(text)
---     d(text)
--- end
-
--- function FMI.debug(text)
---     if FMI.data.showdebug ~= nil then
---         if FMI.data.showdebug == true then
---             FMI.message("|c2080D0FMI debug :: |r" .. text)
---         end
---     end
--- end
 -- ------------------------------ Initialize------------------------------------
 -- function FMI.ClearSessionData()
 --     ---Reset Session data
@@ -225,14 +210,14 @@ end
 --     if options == nil or options == "" then
 --         ---- command instr
 --         for i = 1, #FMI.lang.core.cmdHelp, 1 do
---             FMI.message(FMI.lang.core.cmdHelp[i])
+--             d(FMI.lang.core.cmdHelp[i])
 --         end
 --         return
 --     end
 
 --     cmd = string.lower(options)
 
---     FMI.debug("Command line -> [" .. cmd .. "]")
+--     Debugger.print("Command line -> [" .. cmd .. "]")
 
 --     if cmd == "show" or cmd == "on" then
 --         FMI.showWindow()
@@ -356,12 +341,12 @@ end
 --             FMI.data.itemData[itmIndex].history[gname].avg =
 --                 FMI.data.itemData[itmIndex].history[gname].sum / FMI.data.itemData[itmIndex].history[gname].seen
 --         else
---             FMI.debug("--------------------------------------")
---             FMI.debug("ERROR: Tonumber conversion failed.")
---             FMI.debug("stackCount: " .. stackCount)
---             FMI.debug("timeRemaining: " .. timeRemaining)
---             FMI.debug("price: " .. price)
---             FMI.debug("--------------------------------------")
+--             Debugger.print("--------------------------------------")
+--             Debugger.print("ERROR: Tonumber conversion failed.")
+--             Debugger.print("stackCount: " .. stackCount)
+--             Debugger.print("timeRemaining: " .. timeRemaining)
+--             Debugger.print("price: " .. price)
+--             Debugger.print("--------------------------------------")
 --         end
 --     end
 -- end
@@ -427,11 +412,11 @@ end
 --     if delay > 0 then
 --         --        delay = delay + 1000  --- why add 1 second when the delay is only 3 seconds? dOpiate
 --         local delayInSeconds = math.ceil(delay / 1000)
---         FMI.debug("waiting " .. delay .. "ms before switching to " .. guildId)
+--         Debugger.print("waiting " .. delay .. "ms before switching to " .. guildId)
 --         FreeMyInventoryStatus:SetText(string.format(FMI.lang.gui.searchpause, delayInSeconds))
 --         ld_timer.addWithData("FMI_Search", delay, FMI.SaveSwitchTradingHouseGuild, 1, guildId)
 --     else
---         FMI.debug("executing switching to " .. guildId)
+--         Debugger.print("executing switching to " .. guildId)
 --         SelectTradingHouseGuildId(guildId)
 --         FMI.queueTradingHouseSearch(0, TRADING_HOUSE_SORT_SALE_PRICE, true)
 --     end
@@ -764,15 +749,15 @@ end
 
 -- function FMI.ContinueSearch()
 --     if ZO_TradingHouse:IsHidden() then
---         FMI.message(FMI.lang.gui.searchNoGS)
+--         d(FMI.lang.gui.searchNoGS)
 --         return
 --     end
 
 --     if FMI.State ~= "NONE" then
---         FMI.message(FMI.lang.gui.searchBusy)
+--         d(FMI.lang.gui.searchBusy)
 --         return
 --     end
---     FMI.debug("Retrv...")
+--     Debugger.print("Retrv...")
 
 --     -- FreeMyInventoryFindMatchesButton:SetHidden(true)
 
@@ -784,7 +769,7 @@ end
 
 --     SelectTradingHouseGuildId(tonumber(FMI.data.lastSearchRequest.guildId))
 
---     FMI.debug("Searching...")
+--     Debugger.print("Searching...")
 --     FMI.queueTradingHouseSearch(FMI.data.lastSearchRequest.currentPage, TRADING_HOUSE_SORT_SALE_PRICE, true)
 
 --     if selectedText == FMI.lang.gui.guild_all then
@@ -796,15 +781,15 @@ end
 
 -- function FMI.Retrieve()
 --     if ZO_TradingHouse:IsHidden() then
---         FMI.message(FMI.lang.gui.searchNoGS)
+--         d(FMI.lang.gui.searchNoGS)
 --         return
 --     end
 
 --     if FMI.State ~= "NONE" then
---         FMI.message(FMI.lang.gui.searchBusy)
+--         d(FMI.lang.gui.searchBusy)
 --         return
 --     end
---     FMI.debug("Retrv...")
+--     Debugger.print("Retrv...")
 
 --     -- FreeMyInventoryFindMatchesButton:SetHidden(true)
 
@@ -818,7 +803,7 @@ end
 --     FMI.last_search_count = 0
 
 --     if selectedText == FMI.lang.gui.guild_all then
---         FMI.debug("Finding all...")
+--         Debugger.print("Finding all...")
 --         FMI.data.search_results = {} -- clear all results for a full refresh
 --         local firstTradingGuild = FMI.nextTradingHouse(0)
 
@@ -827,7 +812,7 @@ end
 --             return
 --         end
 
---         FMI.debug("Selected guild" .. firstTradingGuild .. "...")
+--         Debugger.print("Selected guild" .. firstTradingGuild .. "...")
 --         SelectTradingHouseGuildId(firstTradingGuild)
 --     else
 --         if FMI.canUseTradingHouse(tonumber(selectedText)) then
@@ -845,7 +830,7 @@ end
 --         end
 --     end
 
---     FMI.debug("Searching...")
+--     Debugger.print("Searching...")
 --     FMI.queueTradingHouseSearch(0, TRADING_HOUSE_SORT_SALE_PRICE, true)
 
 --     if selectedText == FMI.lang.gui.guild_all then
@@ -857,7 +842,7 @@ end
 
 -- function FMI.queueTradingHouseSearch(a, b, c)
 --     --need a message mere
---     FMI.debug("Queuing request for " .. a .. ", " .. b)
+--     Debugger.print("Queuing request for " .. a .. ", " .. b)
 
 --     FMI.SaveQueueTradingHouseSearch("", {a, b, c})
 -- end
@@ -868,11 +853,11 @@ end
 --     if delay > 0 then
 --         --        delay = delay + 1000        --- dOpiate the delay is 3 seconds, why keep settin it back to 4??
 --         local delayInSeconds = math.ceil(delay / 1000)
---         FMI.debug("waiting " .. delay .. "ms before executing search")
+--         Debugger.print("waiting " .. delay .. "ms before executing search")
 --         FreeMyInventoryStatus:SetText(string.format(FMI.lang.gui.searchpause, delayInSeconds))
 --         ld_timer.addWithData("FMI_Search", delay, FMI.SaveQueueTradingHouseSearch, 1, params)
 --     else
---         FMI.debug("executing search")
+--         Debugger.print("executing search")
 --         FMI.doTradingHouseSearch("", params)
 --     end
 -- end
@@ -880,7 +865,7 @@ end
 -- function FMI.doTradingHouseSearch(name, params) -- params == {0,TRADING_HOUSE_SORT_SALE_PRICE, true}
 --     --d(params)
 --     FreeMyInventoryStatus:SetText(FMI.lang.gui.searchproc)
---     FMI.debug("Asking for for " .. params[1] .. ", " .. params[2] .. " ...")
+--     Debugger.print("Asking for for " .. params[1] .. ", " .. params[2] .. " ...")
 --     ExecuteTradingHouseSearch(params[1], params[2], params[3])
 -- end
 

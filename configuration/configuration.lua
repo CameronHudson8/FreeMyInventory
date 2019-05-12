@@ -26,7 +26,7 @@ local configuration = {
     },
     language_options = {"Auto", "English", "Deutsch", "Français", "Russian"},
     last_search_count = 0,
-    name = "FreeMyInventory",
+    addOnName = "FreeMyInventory",
     ResultControls = {},
     ResultsSlider = nil,
     SearchMatches = {},
@@ -37,4 +37,7 @@ local configuration = {
     Version = "0.15b"
 }
 
-FreeMyInventory.configuration = configuration
+for key, value in pairs(configuration) do
+    assert(FreeMyInventory[key] == nil, "A value for FreeMyInventory." .. key .. " already exists")
+    FreeMyInventory[key] = value
+end

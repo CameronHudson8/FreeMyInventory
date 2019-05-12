@@ -1,15 +1,18 @@
 FreeMyInventory = FreeMyInventory or {}
 
--- Load classes
+-- Load constants used in this file
+local addOnName = FreeMyInventory.addOnName
+
+-- Load classes used in this file
 local SavedDataLoader = FreeMyInventory.SavedDataLoader
 
 -- No d() statements will appear if they are called in this function.
 -- To show d() statements on startup, put them in the confirmStartup function.
-local onAddOnLoaded = function(event, addonName)
-    if addonName ~= FreeMyInventory.name then
+local onAddOnLoaded = function(event, loadedAddOnName)
+    if loadedAddOnName ~= addOnName then
         return
     end
-    EVENT_MANAGER:UnregisterForEvent(FreeMyInventory.name, EVENT_ADD_ON_LOADED)
+    EVENT_MANAGER:UnregisterForEvent(addOnName, EVENT_ADD_ON_LOADED)
 
     SavedDataLoader.load()
     SavedDataLoader.upgrade()

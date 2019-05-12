@@ -1,5 +1,7 @@
 FreeMyInventory = FreeMyInventory or {}
 
+local Debugger = FreeMyInventory.Debugger
+
 local onGuildSelfJoinedGuild = function()
     -- if FMI.dropDownInit then
     --     return
@@ -28,7 +30,7 @@ local onGuildSelfJoinedGuild = function()
     --         else
     --             color = "|cFFFF00"
     --         end
-    --         FMI.debug("Dropdown add ::" .. string.format(FMI.lang.gui.guild_templ, resultId, color, name))
+    --         Debugger.print("Dropdown add ::" .. string.format(FMI.lang.gui.guild_templ, resultId, color, name))
     --         local formattedName = string.format(FMI.lang.gui.guild_templ, resultId, color, name)
     --         local entry =
     --             dropdown:CreateItemEntry(
