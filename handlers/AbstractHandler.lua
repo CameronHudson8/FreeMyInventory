@@ -3,8 +3,7 @@
 -- Static and instance variables
 local AbstractHandler = {
     event = nil,
-    onEvent = nil,
-    inheritanceTest = "abstract success!"
+    onEvent = nil
 }
 
 -- Begin boilerplate class code
@@ -18,6 +17,10 @@ function AbstractHandler.new(event, onEvent)
     self.event = event
     self.onEvent = onEvent
     return self
+end
+
+function AbstractHandler:getInheritanceTest()
+    return self.inheritanceTest
 end
 
 FreeMyInventory.AbstractHandler = AbstractHandler

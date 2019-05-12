@@ -9,11 +9,10 @@ local OnAddOnLoadedHandler = FreeMyInventory.OnAddOnLoadedHandler
 Debugger.print("Static test...")
 Debugger.print(OnAddOnLoadedHandler:getInheritanceTest())
 
-Debugger.print("Instance test...")
-local testHandler = OnAddOnLoadedHandler.new()
-testHandler:setInheritanceTest("instance success!")
-Debugger.print(testHandler:getInheritanceTest())
-
+-- Debugger.print("Instance test...")
+-- local testHandler = OnAddOnLoadedHandler.new()
+-- testHandler:setInheritanceTest("instance success!")
+-- Debugger.print(testHandler:getInheritanceTest())
 
 Debugger.print("Static test...")
 Debugger.print(OnAddOnLoadedHandler:getInheritanceTest())
