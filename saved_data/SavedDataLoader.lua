@@ -1,12 +1,9 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 -- Static functions and variables
 local SavedDataLoader = {
     DEFAULT_SAVED_DATA = FreeMyInventory.defaultSavedData,
     DISPLAY_NAME = nil,
-    load = function()
-        return ZO_SavedVars:NewAccountWide(SAVED_VARIABLE_TABLE, VERSION, NAMESPACE, DEFAULTS, PROFILE, DISPLAY_NAME)
-    end,
     NAMESPACE = nil,
     PROFILE = nil,
     SAVED_VARIABLE_TABLE = "FreeMyInventory_data",

@@ -1,10 +1,27 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
--- Load constants used in this file
+-- Imports
 local addOnName = FreeMyInventory.addOnName
-
--- Load classes used in this file
 local SavedDataLoader = FreeMyInventory.SavedDataLoader
+local Debugger = FreeMyInventory.Debugger
+
+-- TODO Determine whether this function is still necessary
+local clearSessionData = function(data)
+    ---Reset Session data
+    for id, itemData in pairs(data.itemData) do
+        Debugger.print("test")
+        Debugger.print(data.itemData)
+        -- Debugger.print(data.itemData.session)
+        for gname, value in pairs(data.itemData[id].session) do
+            data.itemData[id].session[gname] = nil
+        end
+    end
+
+    -- clean up save search data
+    for index, value in pairs(data.search_results) do
+        data.search_results[index][10] = -1 --- set page ref to -1
+    end
+end
 
 -- No d() statements will appear if they are called in this function.
 -- To show d() statements on startup, put them in the confirmStartup function.
@@ -89,7 +106,8 @@ local onAddOnLoaded = function(event, loadedAddOnName)
 
     -- FMI.Reset()
 
-    -- FMI.ClearSessionData()
+    -- TODO Determine whether this function is still necessary
+    clearSessionData(FreeMyInventory.data)
 
     -- FMI.SetCanContinueSearch()
 
@@ -97,4 +115,4 @@ local onAddOnLoaded = function(event, loadedAddOnName)
     FreeMyInventory.addOnLoaded = true
 end
 
-FreeMyInventory.onAddOnLoaded = onAddOnLoaded
+--[[ global ]] FreeMyInventory.onAddOnLoaded = onAddOnLoaded

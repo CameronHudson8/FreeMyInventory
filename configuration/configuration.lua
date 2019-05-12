@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 ----- Declare Core Data/Objects
 
@@ -8,7 +8,11 @@ local configuration = {
     data = {
         window = {x = 0, y = 0},
         undercutPerc = 5, -- Undercut Percentage
-        itemData = {},
+        itemData = {
+            [1] = {
+                session = {}
+            }
+        },
         tooltips = {session = true, history = true, recommend = true},
         search_results = {},
         last_search = "",

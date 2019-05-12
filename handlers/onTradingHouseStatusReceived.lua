@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 local onTradingHouseStatusReceived = function()
     -- FMI.PopulateGuildList()

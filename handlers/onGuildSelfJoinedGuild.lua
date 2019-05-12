@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 local Debugger = FreeMyInventory.Debugger
 

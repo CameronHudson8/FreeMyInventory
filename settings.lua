@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 -- Import other stuff (from configuration\configuration.lua)
 local lang = FreeMyInventory.lang

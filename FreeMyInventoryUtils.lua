@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 local utils = {
     Behead = function(sentence)

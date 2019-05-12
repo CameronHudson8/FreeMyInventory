@@ -1,9 +1,7 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
--- Load constants used in this file
+-- Imports
 local addOnName = FreeMyInventory.addOnName
-
--- Load classes used in this file
 local Debugger = FreeMyInventory.Debugger
 
 -- Register handlers
@@ -23,21 +21,6 @@ for event, handlerName in pairs(eventsAndhandlers) do
 end
 
 -- TODO Refactor from here down
-
--- ------------------------------ Initialize------------------------------------
--- function FMI.ClearSessionData()
---     ---Reset Session data
---     for id, data in pairs(FMI.data.itemData) do
---         for gname, value in pairs(FMI.data.itemData[id].session) do
---             FMI.data.itemData[id].session[gname] = nil
---         end
---     end
-
---     -- clean up  save search data
---     for n = 1, #FMI.data.search_results, 1 do
---         FMI.data.search_results[n][10] = -1 --- set page ref to -1
---     end
--- end
 
 -- ------------------------------ Functions------------------------------------
 -- local function shortguild(guildName)

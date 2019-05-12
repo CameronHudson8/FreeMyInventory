@@ -1,4 +1,4 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 local onCloseTradingHouse = function()
     -- if FreeMyInventory:IsHidden() == false then

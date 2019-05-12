@@ -1,6 +1,6 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
--- Static functions and variables
+-- Static and instance variables
 local MyClass = {
     myStaticVariable = "Hello World"
 }
@@ -24,6 +24,10 @@ function MyClass.new(init)
     -- End boilerplate class code
 
     return self
+end
+
+-- Static methods
+function MyClass.staticMethod()
 end
 
 -- Instance methods

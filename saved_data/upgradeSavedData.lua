@@ -1,8 +1,7 @@
-FreeMyInventory = FreeMyInventory or {}
+--[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 local upgradeSavedData = {
     showdebug = false,
-    itemData = {},
     tooltips = {
         session = true,
         history = true,
