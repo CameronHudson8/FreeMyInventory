@@ -1,21 +1,17 @@
 --[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
 -- Static and instance variables
-local AbstractClass = {
-    event = nil,
-    onEvent = nil
-}
+local AbstractClass = {}
 
 -- Begin boilerplate class code
 AbstractClass.__index = AbstractClass
 -- End boilerplate class code
 
-function AbstractClass.new(event, onEvent)
+function AbstractClass.new()
     -- Begin boilerplate class code
     local self = setmetatable({}, AbstractClass)
     -- End boilerplate class code
-    self.event = event
-    self.onEvent = onEvent
+
     return self
 end
 

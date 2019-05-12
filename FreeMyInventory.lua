@@ -4,22 +4,10 @@
 local addOnName = FreeMyInventory.addOnName
 local Debugger = FreeMyInventory.Debugger
 local ConcreteClass = FreeMyInventory.ConcreteClass
-local OnAddOnLoadedHandler = FreeMyInventory.OnAddOnLoadedHandler
-
-Debugger.print("Static test...")
-Debugger.print(ConcreteClass:getInheritanceTest())
-
-Debugger.print("Instance test...")
-local testInstance = ConcreteClass.new()
-testInstance:setInheritanceTest("instance success!")
-Debugger.print(testInstance:getInheritanceTest())
-
-Debugger.print("Static test...")
-Debugger.print(ConcreteClass:getInheritanceTest())
 
 -- Register handlers
 local eventsAndhandlers = {
-    [EVENT_ADD_ON_LOADED] = "onAddOnLoaded",
+    -- [EVENT_ADD_ON_LOADED] = "onAddOnLoaded",
     [EVENT_CLOSE_TRADING_HOUSE] = "onCloseTradingHouse",
     -- TODO The following two handlers do the same thing. Make them call a function of a common class.
     [EVENT_GUILD_SELF_JOINED_GUILD] = "onGuildSelfJoinedGuild",
@@ -33,6 +21,13 @@ for event, handlerName in pairs(eventsAndhandlers) do
     EVENT_MANAGER:RegisterForEvent(addOnName, event, FreeMyInventory[handlerName])
 end
 
+local handlers = {
+    FreeMyInventory.OnAddOnLoadedHandler
+}
+
+for index, handler in pairs(handlers) do
+    EVENT_MANAGER:RegisterForEvent(addOnName, handler:getEvent(), handler:getHandler())
+end
 -- TODO Refactor from here down
 
 -- ------------------------------ Functions------------------------------------

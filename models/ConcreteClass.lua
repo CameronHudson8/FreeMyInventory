@@ -23,4 +23,8 @@ end
 function ConcreteClass.staticMethod()
 end
 
+function ConcreteClass:someNewMethod()
+    return "fish"
+end
+
 FreeMyInventory.ConcreteClass = ConcreteClass
