@@ -2,30 +2,24 @@
 
 -- Imports
 local addOnName = FreeMyInventory.addOnName
+local AbstractHandler = FreeMyInventory.AbstractHandler
 local SavedDataLoader = FreeMyInventory.SavedDataLoader
 local Debugger = FreeMyInventory.Debugger
 
--- TODO Determine whether this function is still necessary
-local clearSessionData = function(data)
-    ---Reset Session data
-    for id, itemData in pairs(data.itemData) do
-        Debugger.print("test")
-        Debugger.print(data.itemData)
-        -- Debugger.print(data.itemData.session)
-        for gname, value in pairs(data.itemData[id].session) do
-            data.itemData[id].session[gname] = nil
-        end
-    end
+-- Static and instance variables
+local OnAddOnLoadedHandler = {
+    event = EVENT_ADD_ON_LOADED
+}
 
-    -- clean up save search data
-    for index, value in pairs(data.search_results) do
-        data.search_results[index][10] = -1 --- set page ref to -1
-    end
-end
+-- Begin boilerplate class code
+setmetatable(OnAddOnLoadedHandler, {__index = AbstractHandler})
+-- End boilerplate class code
+
+-- Static methods
 
 -- No d() statements will appear if they are called in this function.
 -- To show d() statements on startup, put them in the confirmStartup function.
-local onAddOnLoaded = function(event, loadedAddOnName)
+function OnAddOnLoadedHandler.handler(event, loadedAddOnName)
     if loadedAddOnName ~= addOnName then
         return
     end
@@ -107,7 +101,7 @@ local onAddOnLoaded = function(event, loadedAddOnName)
     -- FMI.Reset()
 
     -- TODO Determine whether this function is still necessary
-    clearSessionData(FreeMyInventory.data)
+    OnAddOnLoadedHandler.clearSessionData(FreeMyInventory.data)
 
     -- FMI.SetCanContinueSearch()
 
@@ -115,4 +109,19 @@ local onAddOnLoaded = function(event, loadedAddOnName)
     FreeMyInventory.addOnLoaded = true
 end
 
---[[ global ]] FreeMyInventory.onAddOnLoaded = onAddOnLoaded
+-- TODO Determine whether this function is still necessary
+function OnAddOnLoadedHandler.clearSessionData(data)
+    ---Reset Session data
+    for id, itemData in pairs(data.itemData) do
+        for gname, value in pairs(data.itemData[id].session) do
+            data.itemData[id].session[gname] = nil
+        end
+    end
+
+    -- clean up save search data
+    for index, value in pairs(data.search_results) do
+        data.search_results[index][10] = -1 --- set page ref to -1
+    end
+end
+
+FreeMyInventory.OnAddOnLoadedHandler = OnAddOnLoadedHandler

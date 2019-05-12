@@ -15,9 +15,11 @@ configuration\configuration.lua
 
 ; Tools
 tools\Debugger.lua
+tools\GuildUpdater.lua
 
 ; Classes
-models\MyClass.lua
+models\AbstractClass.lua
+models\ConcreteClass.lua
 
 ; Default saved data
 saved_data\defaultSavedData.lua
@@ -25,14 +27,15 @@ saved_data\upgradeSavedData.lua
 saved_data\SavedDataLoader.lua
 
 ; Handlers
-handlers\onAddOnLoaded.lua
-handlers\onCloseTradingHouse.lua
-handlers\onGuildSelfJoinedGuild.lua
-handlers\onGuildSelfLeftGuild.lua
-handlers\onOpenTradingHouse.lua
-handlers\onPlayerActivated.lua
-handlers\onScreenResized.lua
-handlers\onTradingHouseStatusReceived.lua
+handlers\AbstractHandler.lua
+handlers\OnAddOnLoadedHandler.lua
+handlers\OnCloseTradingHouseHandler.lua
+handlers\OnGuildSelfJoinedGuildHandler.lua
+handlers\OnGuildSelfLeftGuildHandler.lua
+handlers\OnOpenTradingHouseHandler.lua
+handlers\OnPlayerActivatedHandler.lua
+handlers\OnScreenResizedHandler.lua
+handlers\OnTradingHouseStatusReceivedHandler.lua
 
 ; Other stuff (To be checked during refactoring)
 Libs\LibStub\LibStub.lua
