@@ -17,7 +17,8 @@ configuration\configuration.lua
 tools\Debugger.lua
 
 ; Classes
-models\MyClass.lua
+models\AbstractClass.lua
+models\ConcreteClass.lua
 
 ; Default saved data
 saved_data\defaultSavedData.lua

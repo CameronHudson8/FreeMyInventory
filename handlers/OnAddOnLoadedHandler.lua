@@ -2,19 +2,20 @@
 
 local AbstractHandler = FreeMyInventory.AbstractHandler
 
+-- Static and instance variables
 local OnAddOnLoadedHandler = {
     inheritanceTest = "concrete success!"
 }
+
 -- Begin boilerplate class code
 setmetatable(OnAddOnLoadedHandler, {__index = AbstractHandler})
--- OnAddOnLoadedHandler.__index = OnAddOnLoadedHandler
 -- End boilerplate class code
 
 function OnAddOnLoadedHandler.new()
     -- Begin boilerplate class code
     local self = setmetatable({}, {__index = OnAddOnLoadedHandler})
-    -- self.__index = OnAddOnLoadedHandler
     -- End boilerplate class code
+
     return self
 end
 
@@ -31,13 +32,5 @@ end
 function OnAddOnLoadedHandler:getValue()
     return self.value
 end
-
--- function OnAddOnLoadedHandler:setInheritanceTest(value)
---     self.inheritanceTest = value
--- end
-
--- function OnAddOnLoadedHandler:getInheritanceTest()
---     return self.inheritanceTest
--- end
 
 FreeMyInventory.OnAddOnLoadedHandler = OnAddOnLoadedHandler

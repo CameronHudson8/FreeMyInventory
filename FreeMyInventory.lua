@@ -3,19 +3,19 @@
 -- Imports
 local addOnName = FreeMyInventory.addOnName
 local Debugger = FreeMyInventory.Debugger
-local MyClass = FreeMyInventory.MyClass
+local ConcreteClass = FreeMyInventory.ConcreteClass
 local OnAddOnLoadedHandler = FreeMyInventory.OnAddOnLoadedHandler
 
 Debugger.print("Static test...")
-Debugger.print(OnAddOnLoadedHandler:getInheritanceTest())
+Debugger.print(ConcreteClass:getInheritanceTest())
 
--- Debugger.print("Instance test...")
--- local testHandler = OnAddOnLoadedHandler.new()
--- testHandler:setInheritanceTest("instance success!")
--- Debugger.print(testHandler:getInheritanceTest())
+Debugger.print("Instance test...")
+local testInstance = ConcreteClass.new()
+testInstance:setInheritanceTest("instance success!")
+Debugger.print(testInstance:getInheritanceTest())
 
 Debugger.print("Static test...")
-Debugger.print(OnAddOnLoadedHandler:getInheritanceTest())
+Debugger.print(ConcreteClass:getInheritanceTest())
 
 -- Register handlers
 local eventsAndhandlers = {
