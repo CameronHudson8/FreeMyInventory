@@ -25,6 +25,9 @@ saved_data\upgradeSavedData.lua
 saved_data\SavedDataLoader.lua
 
 ; Handlers
+handlers\AbstractHandler.lua
+handlers\OnAddOnLoadedHandler.lua
+
 handlers\onAddOnLoaded.lua
 handlers\onCloseTradingHouse.lua
 handlers\onGuildSelfJoinedGuild.lua

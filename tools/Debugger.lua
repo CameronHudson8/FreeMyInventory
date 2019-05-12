@@ -19,10 +19,9 @@ setmetatable(
 )
 -- End boilerplate class code
 
-function Debugger.new(init)
+function Debugger.new()
     -- Begin boilerplate class code
     local self = setmetatable({}, Debugger)
-    self.value = init
     -- End boilerplate class code
 
     return self
