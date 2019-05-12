@@ -1,8 +1,8 @@
 --[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
-local Debugger = FreeMyInventory.Debugger
+local GuildUpdater = {}
 
-local onGuildSelfJoinedGuild = function()
+function GuildUpdater.updateGuild()
     -- if FMI.dropDownInit then
     --     return
     -- end
@@ -47,4 +47,4 @@ local onGuildSelfJoinedGuild = function()
     -- FMI.dropDownInit = false
 end
 
-FreeMyInventory.onGuildSelfJoinedGuild = onGuildSelfJoinedGuild
+FreeMyInventory.GuildUpdater = GuildUpdater

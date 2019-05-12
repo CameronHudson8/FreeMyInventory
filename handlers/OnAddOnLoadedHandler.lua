@@ -15,14 +15,6 @@ local OnAddOnLoadedHandler = {
 setmetatable(OnAddOnLoadedHandler, {__index = AbstractHandler})
 -- End boilerplate class code
 
-function OnAddOnLoadedHandler.new()
-    -- Begin boilerplate class code
-    local self = setmetatable({}, {__index = OnAddOnLoadedHandler})
-    -- End boilerplate class code
-
-    return self
-end
-
 -- Static methods
 
 -- No d() statements will appear if they are called in this function.

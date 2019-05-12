@@ -1,8 +1,20 @@
 --[[ global ]] FreeMyInventory = FreeMyInventory or {}
 
-local onOpenTradingHouse = function(event)
-    d("Guild store opened!")
-    d("Taking no action...")
+-- Imports
+local AbstractHandler = FreeMyInventory.AbstractHandler
+
+-- Static and instance variables
+local OnOpenTradingHouseHandler = {
+    event = EVENT_OPEN_TRADING_HOUSE
+}
+
+-- Begin boilerplate class code
+setmetatable(OnOpenTradingHouseHandler, {__index = AbstractHandler})
+-- End boilerplate class code
+
+-- Static methods
+function OnOpenTradingHouseHandler.handler(event)
+    d("Opened trading house.")
 
     -- local total_inv_counts, total_inv_links = FMI.CondenseInv()
     -- local item_data = FMI.ComputeBestItemsToSell(total_inv_counts, total_inv_links)
@@ -27,4 +39,4 @@ local onOpenTradingHouse = function(event)
     -- end
 end
 
-FreeMyInventory.onOpenTradingHouse = onOpenTradingHouse
+FreeMyInventory.OnOpenTradingHouseHandler = OnOpenTradingHouseHandler
