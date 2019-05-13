@@ -24,7 +24,7 @@ models\ConcreteClass.lua
 ; Default saved data
 saved_data\defaultSavedData.lua
 saved_data\upgradeSavedData.lua
-saved_data\SavedDataLoader.lua
+saved_data\SavedDataManager.lua
 
 ; Handlers
 handlers\AbstractHandler.lua
@@ -57,7 +57,6 @@ timer.lua
 FreeMyInventoryUtils.lua
 ; FreeMyInventory.xml   Something about this file is messing up FreeMyInventory.configuration
 locale.lua
-settings.lua
 bindings.xml
 
 ; Main file

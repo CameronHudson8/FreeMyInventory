@@ -87,23 +87,6 @@ end
 --     FMI.ClearResultLines()
 -- end
 
--- function FMI.Reset()
---     if FMI.Terms ~= nil then
---         FreeMyInventoryTerms:SetText("")
---     end
---     FreeMyInventoryCounter:SetText("")
---     FMI.ResultsSlider:SetMinMax(1, 1)
---     FMI.ResultsSlider:SetValue(1)
---     FMI.ResultsSlider:SetHidden(true)
---     FMI.ClearResults()
---     FMI.SetState("NONE")
-
---     --- Rebuild list
---     FMI.dropDownInit = false
---     FMI.PopulateGuildList()
---     FMI.SetCanContinueSearch()
--- end
-
 -- function FMI.SetResultLine(index, name, count, price, unitPrice, guildId, pageNumber, icon, quality, gName)
 --     if index < 1 or index > 10 then
 --         return
@@ -720,16 +703,6 @@ end
 --     return -1 -- no more
 -- end
 
--- function FMI.SetCanContinueSearch()
---     local button = FreeMyInventory:GetNamedChild("ContinueSearchButton")
-
---     if FMI.data.lastSearchRequest.guildId == nil then
---         button:SetEnabled(false)
---     else
---         button:SetEnabled(true)
---     end
--- end
-
 -- function FMI.ContinueSearch()
 --     if ZO_TradingHouse:IsHidden() then
 --         d(FMI.lang.gui.searchNoGS)
@@ -1006,19 +979,6 @@ end
 --     end
 
 --     FMI.ShowToolTip(result)
--- end
-
--- function FMI.SetFrameCoords()
---     local x, y = 0, 0
---     local addOnX, addOnY = FreeMyInventory:GetCenter()
---     local guiRootX, guiRootY = GuiRoot:GetCenter()
---     x = addOnX - guiRootX
---     y = addOnY - guiRootY
-
---     FMI.data.window.x = x
---     FMI.data.window.y = y
-
---     --self:SetAnchor(CENTER, GuiRoot,CENTER, x, y)
 -- end
 
 -- -----------------------------------------Utils-------------------------------------------------------
