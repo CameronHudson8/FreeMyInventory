@@ -15,6 +15,7 @@ setmetatable(OnGuildSelfJoinedGuildHandler, {__index = AbstractHandler})
 
 -- Static methods
 function OnGuildSelfJoinedGuildHandler.handler()
+    d("Joined guild.")
     GuildUpdater.updateGuild()
 end
 

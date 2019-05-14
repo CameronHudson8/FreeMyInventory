@@ -15,6 +15,7 @@ setmetatable(OnGuildSelfLeftGuildHandler, {__index = AbstractHandler})
 
 -- Static methods
 function OnGuildSelfLeftGuildHandler.handler()
+    d("Left guild.")
     GuildUpdater.updateGuild()
 end
 

@@ -15,9 +15,6 @@ setmetatable(OnCloseTradingHouseHandler, {__index = AbstractHandler})
 -- Static methods
 function OnCloseTradingHouseHandler.handler()
     d("Closed trading house.")
-    -- if FreeMyInventory:IsHidden() == false then
-    --     FreeMyInventory:ToggleHidden()
-    -- end
 end
 
 FreeMyInventory.OnCloseTradingHouseHandler = OnCloseTradingHouseHandler

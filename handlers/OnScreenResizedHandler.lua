@@ -14,9 +14,7 @@ setmetatable(OnScreenResizedHandler, {__index = AbstractHandler})
 
 -- Static methods
 function OnScreenResizedHandler.handler(...)
-    -- PopupTooltip:SetHidden(true)
-    -- PopupTooltip:ClearLines()
-    -- PopupTooltipIcon:SetHidden(true)
+    d("Resized screen.")
 end
 
 FreeMyInventory.OnScreenResizedHandler = OnScreenResizedHandler
